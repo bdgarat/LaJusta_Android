@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">LaJusta</string>
+    <string name="nombreProducto">Producto</string>
+    <string name="precioProducto">Precio</string>
+    <string name="descripcionProducto">Descripcion</string>
+    <string name="botonSuma">+</string>
+    <string name="botonResta">-</string>
+    <string name="cantidadProducto">0</string>
+    <string name="mensajeBotonComprar">Realizar Compra</string>
+    <string name="title_activity__inicio">Activity_Inicio</string>
+    <string name="totalParcial">Total Parcial $</string>
+    <string name="confirmarCompra">Confrimar</string>
+    <string name="botonComprar">Comprar</string>
+    <string name="botonBuscarRecetas">Buscar Recetas</string>
+    <string name="botonMasInformacion">Mas Información</string>
+    <string name="el_total_de_su_compra_es_de">El total de su compra es de:</string>
+    <string name="confirmar">CONFIRMAR</string>
+    <string name="mensaje_graciasporconfiar">Gracias por confiar en</string>
+</resources>
