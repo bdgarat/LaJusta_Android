@@ -7,7 +7,7 @@ android:layout_height="match_parent"
 android:orientation="vertical"
 tools:context=".ActivityCompra">
 
-<ImageView
+    <ImageView
     android:id="@+id/logoLaJusta"
     android:layout_width="match_parent"
     android:layout_height="300dp"
@@ -17,33 +17,33 @@ tools:context=".ActivityCompra">
 </ImageView>
 
     <Button
+        android:id="@+id/botonComprar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:padding="10dp"
         android:text="@string/botonComprar"
         android:textSize="25sp"
-        android:padding="10dp"
-        android:textStyle="bold"
-        android:id="@+id/botonComprar" />
+        android:textStyle="bold" />
 
     <Button
+        android:id="@+id/botonRecetas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:padding="10dp"
         android:text="@string/botonBuscarRecetas"
         android:textSize="25sp"
-        android:padding="10dp"
-        android:textStyle="bold"
-        android:id="@+id/botonRecetas" />
+        android:textStyle="bold" />
 
     <Button
+        android:id="@+id/botonMasInformacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:padding="10dp"
         android:text="@string/botonMasInformacion"
         android:textSize="25sp"
-        android:textStyle="bold"
-        android:padding="10dp"
-        android:id="@+id/botonMasInformacion" />
+        android:textStyle="bold" />
 
 </LinearLayout>

@@ -23,7 +23,13 @@ public class MainActivity extends AppCompatActivity {
 
         recetas.setOnClickListener(v -> Toast.makeText(MainActivity.this,"Esta funcionalidad todavia no fue implementada",Toast.LENGTH_SHORT).show());
 
-        masInformacion.setOnClickListener(v -> Toast.makeText(MainActivity.this,"Esta funcionalidad todavia no fue implementada",Toast.LENGTH_SHORT).show());
+        //masInformacion.setOnClickListener(v -> Toast.makeText(MainActivity.this,"Esta funcionalidad todavia no fue implementada",Toast.LENGTH_SHORT).show());
+
+        masInformacion.setOnClickListener(v -> {
+            Intent i = new Intent(MainActivity.this, ActivityMasInfo.class);
+            startActivity(i);
+        });
+
     }
 
     @Override
