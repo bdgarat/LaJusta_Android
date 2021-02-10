@@ -12,11 +12,13 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class ActivityMapaNodos extends Activity {
     MapView map = null;
@@ -53,11 +55,28 @@ public class ActivityMapaNodos extends Activity {
         nodosEntrega.add(new OverlayItem("Nodo Club de Gorina", "Nodo Club de Gorina", nodoClubGorina));
         nodosEntrega.add(new OverlayItem("Nodo Club Deportivo Villa Elisa", "Nodo Club Deportivo Villa Elisa", nodoCDVillaElisa));
 
-        mapController.setCenter(nodoLaHormiguera); //Setea el nodo La Hormiguera como el default a mostrar
+        String nodoSeleccionado = getIntent().getStringExtra("EXTRA_NOMBRE_NODO");
+        if (nodoSeleccionado == null) {
+            mapController.setCenter(nodoLaHormiguera); //Setea el nodo La Hormiguera como el default a mostrar
+        } else { //Busca en la lista de OverlayItems por uno que contenga el titulo igual al string "nodoSeleccionado"
+            ListIterator it = nodosEntrega.listIterator();
+            GeoPoint nodoEncontrado = null;
+            while(nodoEncontrado == null && it.hasNext()) { //Recorre la lista usando un iterador mientras haya un elemento proximo en el iterador y el nodo buscado no haya sido encontrado aun
+                OverlayItem actual = (OverlayItem) it.next();
+                if(actual.getTitle().compareTo(nodoSeleccionado) == 0) { //Si coincida el titulo con el string "nodoSeleccionado", es el que estamos buscando
+                    nodoEncontrado = (GeoPoint) actual.getPoint(); //Se asigna a nodoEncontrado
+                }
+            }
+            if (nodoEncontrado != null) {
+                mapController.setCenter(nodoEncontrado); //Setea el nodo encontrado anteriormente como el centro del mapa a mostrar
+            } else {
+                System.out.println("No se encontró el nodo solicitado"); //Se imprime un mensaje de error. Indica un error interno, el usuario no debería de llegar aqui
+            }
+        }
 
         final MyLocationNewOverlay myLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getApplicationContext()), map);
         map.getOverlays().add(myLocationOverlay);
-        myLocationOverlay.enableMyLocation(); //Las 3 lineas estas deberian de mostrar la ubicacion actual. Testear
+        myLocationOverlay.enableMyLocation(); //Las 3 lineas estas deberian de mostrar la ubicacion actual
 
         ItemizedIconOverlay.OnItemGestureListener<OverlayItem> tap = new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
             @Override

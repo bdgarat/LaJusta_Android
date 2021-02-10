@@ -106,7 +106,6 @@ public class ActivityCompra extends AppCompatActivity {
                             prodsParaCategoria.add(p);
                         }
                     }
-
                 }
                 prodCategorias.put(c.getId(), prodsParaCategoria);
             }
