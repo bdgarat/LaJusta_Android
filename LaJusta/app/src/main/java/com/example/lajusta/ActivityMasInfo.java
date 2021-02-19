@@ -14,6 +14,7 @@ public class ActivityMasInfo extends Activity {
 
         verNodosEnMapa.setOnClickListener(v -> {
             Intent i = new Intent(ActivityMasInfo.this, ActivityMapaNodos.class);
+            //i.putExtra("EXTRA_NOMBRE_NODO", "Nodo Club de Gorina"); // Uso solo para test de busqueda por nodos
             startActivity(i);
         });
     }

@@ -64,6 +64,9 @@ public class ActivityCompra extends AppCompatActivity {
 
             }
         });
+
+        Toast.makeText(this.getApplicationContext(),"Espere mientras se obtienen los productos",Toast.LENGTH_SHORT).show();
+
         //Hace la consulta HTTP de forma asincronica, una vez que esté la respuesta, se ejecuta
         // el onResponse()
         service.getCategories().enqueue(new Callback<ArrayList<Category>>() {

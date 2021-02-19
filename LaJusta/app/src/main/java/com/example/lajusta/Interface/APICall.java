@@ -1,6 +1,7 @@
 package com.example.lajusta.Interface;
 
 import com.example.lajusta.model.Category;
+import com.example.lajusta.model.Nodo;
 import com.example.lajusta.model.Product;
 
 import java.util.ArrayList;
@@ -14,4 +15,7 @@ public interface APICall {
 
     @GET("/api/category")
     Call<ArrayList<Category>> getCategories();
+
+    @GET("/api/node")
+    Call<ArrayList<Nodo>> getNodes();
 }
