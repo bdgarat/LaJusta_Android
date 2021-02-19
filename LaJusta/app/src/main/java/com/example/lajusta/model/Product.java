@@ -1,14 +1,15 @@
 package com.example.lajusta.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Product{
-   private Long id;
-   private String title;
-   private String description;
-   private ArrayList<Category> categories;
-   private double price;
-   private Image images[];
+public class Product implements Serializable{
+    public Long id;
+    public String title;
+    public String description;
+    public ArrayList<Category> categories;
+    public double price;
+    public Image images[];
 
     public Long getId() {
         return id;
@@ -42,4 +43,5 @@ public class Product{
     public ArrayList<Category> getCategories() {
         return categories;
     }
+
 }

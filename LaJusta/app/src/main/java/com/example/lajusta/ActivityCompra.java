@@ -1,11 +1,19 @@
 package com.example.lajusta;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.lajusta.Interface.APICall;
@@ -14,6 +22,9 @@ import com.example.lajusta.model.Category;
 import com.example.lajusta.model.Product;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import retrofit2.Call;
@@ -24,9 +35,11 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class ActivityCompra extends AppCompatActivity {
     private ExpandableListView listado;
+    private SearchView searchView;
     private ArrayList<Category> categorias;
     private ArrayList<Product> productos;
     private Carrito carrito;
+    private CustomExpListViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +47,7 @@ public class ActivityCompra extends AppCompatActivity {
         setContentView(R.layout.activity_compra);
 
         listado = (ExpandableListView) findViewById(R.id.listado);
+        searchView = (SearchView) findViewById(R.id.searchView);
 
         //Creacion del objeto mapper
         ObjectMapper mapper = new ObjectMapper();
@@ -41,7 +55,7 @@ public class ActivityCompra extends AppCompatActivity {
 
         //instanciacion del retrofit con los parametros correspondientes
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://ec2-3-235-40-183.compute-1.amazonaws.com")
+                .baseUrl("http://ec2-3-235-40-183.compute-1.amazonaws.com/swagger-ui/")
                 .addConverterFactory(JacksonConverterFactory.create(mapper))
                 .build();
 
@@ -49,7 +63,7 @@ public class ActivityCompra extends AppCompatActivity {
         APICall service = retrofit.create(APICall.class);
 
         TextView totalParcial = (TextView) this.findViewById(R.id.totalParcial);
-        Button verCarrito = (Button) this.findViewById(R.id.carrito);
+        ImageButton verCarrito = this.findViewById(R.id.carrito);
         carrito = new Carrito();
         verCarrito.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,16 +71,19 @@ public class ActivityCompra extends AppCompatActivity {
                 if (carrito.getProductos().isEmpty()) {
                     Toast.makeText(ActivityCompra.this, "El Carrito de Compras está vacio!", Toast.LENGTH_LONG).show();
                 } else {
-                    Intent i = new Intent(ActivityCompra.this, ActivityCarrito.class);
-                    i.putExtra("total", carrito.calcularPrecio());
+                    Intent i = new Intent(ActivityCompra.this, ActivityMostrarCarrito.class);
+                    SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(carrito.getProductos());
+                    editor.putString("task list", json);
+                    editor.apply();
+                    i.putExtra("total",carrito.calcularPrecio());
                     startActivity(i);
                 }
 
             }
         });
-
-        Toast.makeText(this.getApplicationContext(),"Espere mientras se obtienen los productos",Toast.LENGTH_SHORT).show();
-
         //Hace la consulta HTTP de forma asincronica, una vez que esté la respuesta, se ejecuta
         // el onResponse()
         service.getCategories().enqueue(new Callback<ArrayList<Category>>() {
@@ -85,7 +102,21 @@ public class ActivityCompra extends AppCompatActivity {
                         //Genera un hashmap, cada categoria contiene sus productos
                         HashMap<Integer, ArrayList<Product>> prodCategorias = obtenerProductosPorCategoria(categorias,productos);
                         //ExpAdapter maneja la vista de la Expandable List view y las interacciones
-                        listado.setAdapter(new CustomExpListViewAdapter(categorias, prodCategorias, carrito, totalParcial, ActivityCompra.this));
+                        adapter = new CustomExpListViewAdapter(categorias, prodCategorias, carrito, totalParcial, ActivityCompra.this);
+                        listado.setAdapter(adapter);
+                        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                            @Override
+                            public boolean onQueryTextSubmit(String query) {
+                                adapter.getFilter().filter(query);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onQueryTextChange(String newText) {
+                                adapter.getFilter().filter(newText);
+                                return false;
+                            }
+                        });
                     }
                     @Override
                     public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
@@ -96,6 +127,9 @@ public class ActivityCompra extends AppCompatActivity {
                 System.out.println("No se obtuvieron las categorias");
             }
         });
+
+
+
     }
 
         public HashMap<Integer,ArrayList<Product>> obtenerProductosPorCategoria(ArrayList<Category> categorias, ArrayList<Product> productos){
@@ -109,6 +143,7 @@ public class ActivityCompra extends AppCompatActivity {
                             prodsParaCategoria.add(p);
                         }
                     }
+
                 }
                 prodCategorias.put(c.getId(), prodsParaCategoria);
             }

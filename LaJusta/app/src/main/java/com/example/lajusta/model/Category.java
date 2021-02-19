@@ -1,8 +1,8 @@
 package com.example.lajusta.model;
 
 public class Category {
-    private int id;
-    private String name;
+    public int id;
+    public String name;
 
     public int getId() {
         return id;

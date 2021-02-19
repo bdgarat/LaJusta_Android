@@ -9,19 +9,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lajusta.model.Carrito;
 import com.example.lajusta.model.Category;
+import com.example.lajusta.model.Image;
 import com.example.lajusta.model.Product;
+import com.example.lajusta.model.ProductoEnCarrito;
+import com.example.lajusta.model.Receta;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CustomExpListViewAdapter extends BaseExpandableListAdapter {
+import static android.os.SystemClock.sleep;
+
+ public class CustomExpListViewAdapter extends BaseExpandableListAdapter implements Filterable{
 
     private ArrayList<Category> listCategories;
+    private ArrayList<Category> listFilter;
     private Context context;
     private HashMap<Integer,ArrayList<Product>> prod;
     private Carrito carrito;
@@ -29,6 +39,7 @@ public class CustomExpListViewAdapter extends BaseExpandableListAdapter {
 
     public CustomExpListViewAdapter(ArrayList<Category> listCategories, HashMap<Integer,ArrayList<Product>> prod, Carrito carrito, TextView totalParcial, Context context) {
         this.listCategories = listCategories;
+        this.listFilter = listCategories;
         this.prod=prod;
         this.context = context;
         this.carrito= carrito;
@@ -37,23 +48,24 @@ public class CustomExpListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        return listCategories.size();
+        return listFilter.size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.prod.get(this.listCategories.get(groupPosition).getId()).size();
+        return prod.get(listFilter.get(groupPosition).getId()).size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return listCategories.get(groupPosition);
+            return listFilter.get(groupPosition);
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return prod.get(listCategories.get(groupPosition).getId()).get(childPosition);
+            return prod.get(listFilter.get(groupPosition).getId()).get(childPosition);
     }
+
 
     @Override
     public long getGroupId(int groupPosition) {
@@ -73,73 +85,103 @@ public class CustomExpListViewAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         Category categoria = (Category) getGroup(groupPosition);
-        LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(R.layout.categorias,null);
+
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.categorias, null);
+        }
 
         TextView text = (TextView) convertView.findViewById(R.id.categorias);
         text.setText(categoria.getName());
+
         return convertView;
     }
 
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            //obtiene el producto
-            Product producto = (Product) getChild(groupPosition,childPosition);
+        //obtiene el producto
+        Product producto = (Product) getChild(groupPosition, childPosition);
 
+        if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.productos,null);
+            convertView = inflater.inflate(R.layout.productos, null);
+        }
 
-            //obtiene los elementos de la vista
-            TextView nombre= (TextView) convertView.findViewById(R.id.nombre);
-            TextView descripcion = (TextView) convertView.findViewById(R.id.descripcion);
-            TextView precio = (TextView) convertView.findViewById(R.id.precio);
-            ImageView imagen = (ImageView) convertView.findViewById(R.id.imagen);
-            Button sumar = (Button) convertView.findViewById(R.id.botonSumar);
-            Button restar = (Button) convertView.findViewById(R.id.botonRestar);
-            TextView cantidad = (TextView) convertView.findViewById(R.id.cantidadProducto);
-
-            //obtiene la imagen a partir de base64
-            if(producto.getImages().length>0) {
-            String base64Str = producto.getImage(0).getValue();
-            String base64Image = base64Str.split(",")[1];
-            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-            Bitmap decoded = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            imagen.setImageBitmap(decoded);
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(producto.getDescription()!=null){
+                    Toast.makeText(context.getApplicationContext(),producto.getDescription(),Toast.LENGTH_LONG).show();
+                }
             }
-
-            //setea la cantidad seleccionada del producto
-            if(carrito.getProductos().containsKey(producto)==true){
-                cantidad.setText(String.valueOf(carrito.getProductos().get(producto)));
-            }
-            else{
-                cantidad.setText("0");
-            }
-
-        sumar.setOnClickListener(v -> {
-            carrito.agregarProducto(producto);
-            cantidad.setText(String.valueOf(carrito.getProductos().get(producto)));
-            saldoGastado.setText("Total Parcial $"+String.valueOf(carrito.calcularPrecio()));
-            Toast.makeText(context.getApplicationContext(),producto.getTitle()+" agregado exitosamente",Toast.LENGTH_SHORT).show();
         });
 
-        restar.setOnClickListener(v -> {
-            if (carrito.retirarProducto(producto)) {
-                if (carrito.getProductos().containsKey(producto)) {
-                    cantidad.setText(String.valueOf(carrito.getProductos().get(producto)));
-                } else {
-                    cantidad.setText("0");
+        //obtiene los elementos de la vista
+        TextView nombre = (TextView) convertView.findViewById(R.id.nombre);
+        TextView descripcion = (TextView) convertView.findViewById(R.id.descripcion);
+        TextView precio = (TextView) convertView.findViewById(R.id.precio);
+        ImageView imagen = (ImageView) convertView.findViewById(R.id.imagen);
+        ImageButton sumar = (ImageButton) convertView.findViewById(R.id.botonSumar);
+        ImageButton restar = (ImageButton) convertView.findViewById(R.id.botonRestar);
+        TextView cantidad = (TextView) convertView.findViewById(R.id.cantidadProducto);
+
+        //obtiene la imagen de producto guardada en base64
+        if (producto.getImages().length > 0) {
+            for (Image img : producto.getImages()) {
+                String base64Str = img.getValue();
+                if (base64Str != null) {
+                    String base64Image = base64Str.split(",")[1];
+                    byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                    Bitmap decoded = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    imagen.setImageBitmap(decoded);
+                    break;
                 }
-                Toast.makeText(context.getApplicationContext(),producto.getTitle()+" retirado exitosamente",Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        //setea la cantidad seleccionada del producto
+        boolean hayCantidad = false;
+        for (ProductoEnCarrito p : carrito.getProductos()) {
+            if (p.getProducto().equals(producto)) {
+                cantidad.setText(String.valueOf(p.getCantidad()));
+                hayCantidad = true;
+            }
+        }
+        if (hayCantidad == false) {
+            cantidad.setText("0");
+        }
+
+        //onClick para cuando apreta en agregar producto
+        sumar.setOnClickListener(v -> {
+            ProductoEnCarrito productoASumar = carrito.agregarProducto(producto);
+            cantidad.setText(String.valueOf(productoASumar.getCantidad()));
+            saldoGastado.setText("Total Parcial $" + String.valueOf(carrito.calcularPrecio()));
+            Toast.makeText(context.getApplicationContext(), producto.getTitle() + " agregado exitosamente", Toast.LENGTH_SHORT).show();
+        });
+
+        //onClick para cuando apreta en eliminar producto
+        restar.setOnClickListener(v -> {
+            ProductoEnCarrito productoARestar = carrito.retirarProducto(producto);
+            if (productoARestar != null) {
+                Toast.makeText(context.getApplicationContext(), producto.getTitle() + " retirado exitosamente", Toast.LENGTH_SHORT).show();
                 saldoGastado.setText("Total Parcial $" + String.valueOf(carrito.calcularPrecio()));
+                cantidad.setText(String.valueOf(productoARestar.getCantidad()));
             }
         });
 
         //Datos del producto Titulo,Precio y Descripcion
         nombre.setText(producto.getTitle());
-        descripcion.setText(producto.getDescription());
+        if(producto.getDescription()!=null){
+            if(producto.getDescription().length()>40){
+                descripcion.setText(producto.getDescription().substring(0,39));
+            }
+            else{
+                descripcion.setText(producto.getDescription());
+            }
+        }
         String price = String.valueOf(producto.getPrice());
-        precio.setText("Precio: $"+price);
+        precio.setText("Precio: $" + price);
 
         return convertView;
     }
@@ -149,5 +191,38 @@ public class CustomExpListViewAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
+    @Override
+    public Filter getFilter() {
+        Filter filter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults filterResults = new FilterResults();
+                if(constraint == null || constraint.length() == 0){
+                    filterResults.count = listCategories.size();
+                    filterResults.values = listCategories;
+                }
+                else{
+                    String searchStr = constraint.toString().toLowerCase();
+                    ArrayList<Category> resultData = new ArrayList<>();
+                    for(Category c:listCategories){
+                        if(c.getName().toLowerCase().contains(searchStr)){
+                            resultData.add(c);
+                        }
+                    }
+                    filterResults.count= resultData.size();
+                    filterResults.values = resultData;
+                }
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                listFilter= (ArrayList<Category>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+        return filter;
+    }
 }
 

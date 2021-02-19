@@ -1,11 +1,13 @@
 package com.example.lajusta.model;
 
-public class Image {
-    private int id;
-    private boolean isMain;
-    private String name;
-    private String type;
-    private String value;
+import java.io.Serializable;
+
+public class Image implements Serializable {
+    public int id;
+    public boolean isMain;
+    public String name;
+    public String type;
+    public String value;
 
     public int getId() {
         return id;

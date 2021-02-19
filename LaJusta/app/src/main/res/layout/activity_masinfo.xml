@@ -14,7 +14,8 @@
         <ImageView
             android:id="@+id/logoLaJustaAbout"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="15sp"
             android:contentDescription="@string/logo_description"
             android:src="@mipmap/lajustalogoconaclaracion">
 
@@ -22,17 +23,66 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="397dp"
-            android:layout_height="394dp"
+            android:layout_marginTop="10sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/app_about"
             android:textAlignment="center"
             android:textSize="18sp" />
 
+        <TextView
+            android:id="@+id/textViewRedesSociales"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nuestras Redes:"
+            android:textStyle="bold"
+            android:layout_marginTop="20sp"
+            android:layout_marginBottom="10sp"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textViewInstagram"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Instagram"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textColor="#023CB1"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewFacebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Facebook"
+            android:layout_gravity="center"
+            android:textColor="#023CB1"
+            android:textStyle="bold"
+            android:layout_marginTop="5sp"
+            android:layout_marginBottom="30sp"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
         <Button
             android:id="@+id/buttonVerNodos"
             android:layout_width="match_parent"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            android:textStyle="bold"
             android:layout_height="wrap_content"
             android:text="Ver Nodos en un Mapa" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:id="@+id/desarrolladoresText"
+            android:text="App desarrollada por Grupo9 - Braian David Garat - Federico Perroni"
+            android:gravity="bottom"
+            />
 
     </LinearLayout>
 

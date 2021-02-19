@@ -1,6 +1,26 @@
 package com.example.lajusta.model;
 
 public class Nodo {
+    public Address address;
+    public String deleteAt;
+    public String description;
+    public boolean hasFridge;
+    public int id;
+    public Image image;
+    public String name;
+    public String phone;
+
+    public Nodo(Address address, String deleteAt, String description, boolean hasFridge, int id, Image image, String name, String phone) {
+        this.address = address;
+        this.deleteAt = deleteAt;
+        this.description = description;
+        this.hasFridge = hasFridge;
+        this.id = id;
+        this.image = image;
+        this.name = name;
+        this.phone = phone;
+    }
+
     public Address getAddress() {
         return address;
     }
@@ -9,17 +29,13 @@ public class Nodo {
         this.address = address;
     }
 
-    private Address address;
-
-    public String getDeletedAt() {
-        return deletedAt;
+    public String getDeleteAt() {
+        return deleteAt;
     }
 
-    public void setDeletedAt(String deletedAt) {
-        this.deletedAt = deletedAt;
+    public void setDeleteAt(String deleteAt) {
+        this.deleteAt = deleteAt;
     }
-
-    private String deletedAt;
 
     public String getDescription() {
         return description;
@@ -29,17 +45,13 @@ public class Nodo {
         this.description = description;
     }
 
-    private String description;
-
-    public String getHasFridge() {
+    public boolean isHasFridge() {
         return hasFridge;
     }
 
-    public void setHasFridge(String hasFridge) {
+    public void setHasFridge(boolean hasFridge) {
         this.hasFridge = hasFridge;
     }
-
-    private String hasFridge;
 
     public int getId() {
         return id;
@@ -49,8 +61,6 @@ public class Nodo {
         this.id = id;
     }
 
-    private int id;
-
     public Image getImage() {
         return image;
     }
@@ -58,10 +68,6 @@ public class Nodo {
     public void setImage(Image image) {
         this.image = image;
     }
-
-    private Image image;
-
-    private String name;
 
     public String getName() {
         return name;
@@ -78,7 +84,4 @@ public class Nodo {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
-    private String phone;
-
 }

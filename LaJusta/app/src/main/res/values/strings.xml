@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">LaJusta</string>
-    <string name="logo_description">Logo de La Justa</string>
     <string name="nombreProducto">Producto</string>
     <string name="precioProducto">Precio</string>
     <string name="descripcionProducto">Descripcion</string>
@@ -9,7 +8,7 @@
     <string name="cantidadProducto">0</string>
     <string name="mensajeBotonComprar">Realizar Compra</string>
     <string name="title_activity__inicio">Activity_Inicio</string>
-    <string name="totalParcial">Total Parcial $</string>
+    <string name="totalParcial">Total Parcial $0.0</string>
     <string name="confirmarCompra">Confrimar</string>
     <string name="botonComprar">Comprar</string>
     <string name="botonBuscarRecetas">Buscar Recetas</string>
@@ -18,6 +17,9 @@
     <string name="el_total_de_su_compra_es_de">El total de su compra es de:</string>
     <string name="confirmar">CONFIRMAR</string>
     <string name="mensaje_graciasporconfiar">Gracias por confiar en</string>
-    <string name="app_about">LA JUSTA ES una comercializadora que, desde la Universidad Nacional de La Plata, y en Red con organizaciones sociales, comunitarias, políticas y culturales, promociona  un compre de proximidad de alimentos y otros bienes elaborados artesanalmente por productores de la economía popular, intermediando solidariamente entre el consumo y la producción local.
+    <string name="app_about">LA JUSTA es una comercializadora que, desde la Universidad Nacional de La Plata, y en Red con organizaciones sociales, comunitarias, políticas y culturales, promociona  un compre de proximidad de alimentos y otros bienes elaborados artesanalmente por productores de la economía popular, intermediando solidariamente entre el consumo y la producción local.
 </string>
+    <string name="logo_description">Logo de La Justa</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        >
+        <TextView
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textoRecetas"
+            android:text="Buscador de recetas"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchViewRecetas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:queryHint="Ingresar ingredientes"
+            android:background="#36575656"
+            app:iconifiedByDefault="false"
+            android:layout_margin="2dp" />
+
+        <ListView
+            android:id="@+id/listadoRecetas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

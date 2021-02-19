@@ -5,16 +5,16 @@
     android:layout_height="50dp"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#FF7043"
+    android:background="@drawable/gradient_categorias"
     app:cardCornerRadius="8dp">
 
         <TextView
             android:id="@+id/categorias"
             android:textColor="@android:color/black"
             android:layout_margin="15dp"
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"/>

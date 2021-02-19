@@ -1,49 +1,72 @@
 package com.example.lajusta.model;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Carrito{
-    private HashMap<Product,Integer> productos;
+    public User usuario;
+    public ArrayList<ProductoEnCarrito> productos;
 
-    public Carrito(){
-        productos = new HashMap();
+    public Carrito() {
+        this.productos = new ArrayList<>();
     }
 
-    public HashMap<Product, Integer> getProductos() {
+    public User getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(User usuario) {
+        this.usuario = usuario;
+    }
+
+    public void setProductos(ArrayList<ProductoEnCarrito> productos) {
+        this.productos = productos;
+    }
+
+    public ArrayList<ProductoEnCarrito> getProductos(){
         return productos;
     }
 
-    public void agregarProducto(Product p){
-        if (!productos.containsKey(p)) {
-            productos.put(p,1);
-        }
-        else{
-            productos.replace(p,productos.get(p),productos.get(p)+1);
-        }
-    }
-    public boolean retirarProducto(Product p){
-            if(productos.containsKey(p)) {
-
-                if (productos.get(p) > 1) {
-                    productos.replace(p,productos.get(p),productos.get(p)-1);
-                    return true;
-                }
-                if(productos.get(p).intValue()==1){
-                    productos.remove(p);
-                }
-                return true;
+    public ProductoEnCarrito agregarProducto(Product p){
+        ProductoEnCarrito productoADevolver = new ProductoEnCarrito();
+        boolean estaEnCarrito=false;
+        for(ProductoEnCarrito product:productos){
+            if(product.getProducto().equals(p)){
+                productoADevolver=product;
+                product.setCantidad(product.getCantidad()+1);
+                estaEnCarrito=true;
             }
-            return false;
+        }
+        if(!estaEnCarrito){
+            productoADevolver = new ProductoEnCarrito(p,1);
+            productos.add(productoADevolver);
+        }
+        return productoADevolver;
     }
+
+    public ProductoEnCarrito retirarProducto(Product p) {
+        for (ProductoEnCarrito product : productos) {
+            if (product.getProducto().equals(p)) {
+                if (product.getCantidad() > 1) {
+                    product.setCantidad(product.getCantidad() - 1);
+                    return product;
+                } else {
+                    if (product.getCantidad() == 1) {
+                        productos.remove(product);
+                        product.setCantidad(0);
+                        return product;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
        public double calcularPrecio(){
            double total=0;
-           for(Map.Entry<Product,Integer> producto: productos.entrySet()){
-               total+= (producto.getKey().getPrice()* producto.getValue().intValue());
+           for(ProductoEnCarrito product: productos){
+               total+=(product.getCantidad()*product.getProducto().getPrice());
            }
            return total;
        }

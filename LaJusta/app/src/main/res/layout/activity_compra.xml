@@ -3,28 +3,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ActivityInicio">
 
-
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:text="@string/mensajeBotonComprar"
-        android:textColor="@color/white"
-        android:id="@+id/carrito" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/totalParcial"
+        <TextView
+            android:id="@+id/totalParcial"
+            android:layout_width="wrap_content"
+            android:layout_height="60sp"
+            android:background="#6D87FF00"
+            android:gravity="center"
+            android:text="@string/totalParcial"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/carrito"
+            android:layout_width="60sp"
+            android:layout_height="60sp"
+            android:layout_gravity="right"
+            android:background="#8BC34A"
+            android:layout_marginTop="10sp"
+            android:padding="1sp"
+            android:src="@drawable/carrito" />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SearchView
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:gravity="center"
-        android:text="@string/totalParcial"
-        android:background="#FFFFFF"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content"
+        android:id="@+id/searchView"
+        android:background="#36575656"
+        app:queryHint="Filtrar Categorias"
+        app:iconifiedByDefault="false"
+        android:layout_margin="2dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
