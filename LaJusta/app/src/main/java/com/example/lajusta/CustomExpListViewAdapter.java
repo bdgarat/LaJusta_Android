@@ -1,6 +1,7 @@
  package com.example.lajusta;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -36,14 +37,16 @@ import static android.os.SystemClock.sleep;
     private HashMap<Integer,ArrayList<Product>> prod;
     private Carrito carrito;
     private TextView saldoGastado;
+    private boolean signed_off;
 
-    public CustomExpListViewAdapter(ArrayList<Category> listCategories, HashMap<Integer,ArrayList<Product>> prod, Carrito carrito, TextView totalParcial, Context context) {
+    public CustomExpListViewAdapter(ArrayList<Category> listCategories, HashMap<Integer,ArrayList<Product>> prod, Carrito carrito, TextView totalParcial, boolean signed_off, Context context) {
         this.listCategories = listCategories;
         this.listFilter = listCategories;
         this.prod=prod;
         this.context = context;
         this.carrito= carrito;
         this.saldoGastado=totalParcial;
+        this.signed_off=signed_off;
     }
 
     @Override
@@ -125,6 +128,12 @@ import static android.os.SystemClock.sleep;
         ImageButton sumar = (ImageButton) convertView.findViewById(R.id.botonSumar);
         ImageButton restar = (ImageButton) convertView.findViewById(R.id.botonRestar);
         TextView cantidad = (TextView) convertView.findViewById(R.id.cantidadProducto);
+
+        if(signed_off) {
+            sumar.setVisibility(View.GONE);
+            restar.setVisibility(View.GONE);
+            cantidad.setVisibility(View.GONE);
+        }
 
         //obtiene la imagen de producto guardada en base64
         if (producto.getImages().length > 0) {

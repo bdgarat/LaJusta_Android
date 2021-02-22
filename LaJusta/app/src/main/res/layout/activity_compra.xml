@@ -5,9 +5,10 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ActivityInicio">
+    tools:context=".ActivityMain">
 
     <LinearLayout
+        android:id="@+id/layoutCarrito"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -32,8 +33,8 @@
             android:layout_width="60sp"
             android:layout_height="60sp"
             android:layout_gravity="right"
-            android:background="#8BC34A"
             android:layout_marginTop="10sp"
+            android:background="#8BC34A"
             android:padding="1sp"
             android:src="@drawable/carrito" />
 

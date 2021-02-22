@@ -25,7 +25,7 @@ public class ActivityTicket extends AppCompatActivity {
         Button volver = (Button) this.findViewById(R.id.botonVolverInicio);
         volver.setOnClickListener(v -> {
             Toast.makeText(this.getApplicationContext(),"Compra realizada exitosamente",Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(ActivityTicket.this, ActivityInicio.class);
+            Intent i = new Intent(ActivityTicket.this, ActivityMain.class);
             startActivity(i);
         });
     }

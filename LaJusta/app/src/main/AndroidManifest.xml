@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".ActivityMostrarCarrito"
             android:theme="@style/Theme.LaJusta.NoActionBar" ></activity>
-        <activity android:name=".ActivityMain" />
+        <activity android:name=".ActivityLogin" />
         <activity android:name=".ActivityBienvenida">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,11 +30,12 @@
             android:name=".ActivityCompra"
             android:label="@string/title_activity__inicio"
             android:theme="@style/Theme.LaJusta.NoActionBar" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".ActivityInicio" />
+        <activity android:name=".ActivitySignUp" />
+        <activity android:name=".ActivityMain" />
         <activity android:name=".ActivityReceta" />
         <activity android:name=".ActivityMasInfo"/>
         <activity android:name=".ActivityMapaNodos"/>
+        <activity android:name=".ActivityPerfil"/>
     </application>
 
 </manifest>

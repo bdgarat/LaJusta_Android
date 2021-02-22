@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.lajusta.Interface.APICall;
@@ -40,6 +41,8 @@ public class ActivityCompra extends AppCompatActivity {
     private ArrayList<Product> productos;
     private Carrito carrito;
     private CustomExpListViewAdapter adapter;
+    private boolean signed_off;
+    private LinearLayout layoutCarrito;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class ActivityCompra extends AppCompatActivity {
 
         listado = (ExpandableListView) findViewById(R.id.listado);
         searchView = (SearchView) findViewById(R.id.searchView);
+        layoutCarrito = findViewById(R.id.layoutCarrito);
 
         //Creacion del objeto mapper
         ObjectMapper mapper = new ObjectMapper();
@@ -62,9 +66,19 @@ public class ActivityCompra extends AppCompatActivity {
         //inicia el servicio, ya se puede consumir
         APICall service = retrofit.create(APICall.class);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        signed_off = !sharedPreferences.getBoolean("SignedIn", false);
+
+        if(signed_off) {
+            layoutCarrito.setVisibility(View.GONE);
+        } else {
+            layoutCarrito.setVisibility(View.VISIBLE);
+        }
+
         TextView totalParcial = (TextView) this.findViewById(R.id.totalParcial);
         ImageButton verCarrito = this.findViewById(R.id.carrito);
         carrito = new Carrito();
+
         verCarrito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +86,6 @@ public class ActivityCompra extends AppCompatActivity {
                     Toast.makeText(ActivityCompra.this, "El Carrito de Compras está vacio!", Toast.LENGTH_LONG).show();
                 } else {
                     Intent i = new Intent(ActivityCompra.this, ActivityMostrarCarrito.class);
-                    SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     Gson gson = new Gson();
                     String json = gson.toJson(carrito.getProductos());
@@ -102,7 +115,7 @@ public class ActivityCompra extends AppCompatActivity {
                         //Genera un hashmap, cada categoria contiene sus productos
                         HashMap<Integer, ArrayList<Product>> prodCategorias = obtenerProductosPorCategoria(categorias,productos);
                         //ExpAdapter maneja la vista de la Expandable List view y las interacciones
-                        adapter = new CustomExpListViewAdapter(categorias, prodCategorias, carrito, totalParcial, ActivityCompra.this);
+                        adapter = new CustomExpListViewAdapter(categorias, prodCategorias, carrito, totalParcial, signed_off,ActivityCompra.this);
                         listado.setAdapter(adapter);
                         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                             @Override

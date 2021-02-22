@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lajusta.Interface.APICall;
-import com.example.lajusta.model.Token;
 import com.example.lajusta.model.User;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +23,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-public class SignUpActivity extends AppCompatActivity {
+public class ActivitySignUp extends AppCompatActivity {
     EditText name;
     EditText email;
     EditText password;
@@ -38,14 +37,14 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        TextView text = findViewById(R.id.textRegistrar);
+        TextView text = findViewById(R.id.textPerfil);
         name = findViewById(R.id.editName);
         lastname = findViewById(R.id.editLastName);
         phone = findViewById(R.id.editPhone);
         email = findViewById(R.id.editEmail);
         password = findViewById(R.id.editPass);
         confirmPassword = findViewById(R.id.editConfirmPassword);
-        Button btnlogin=findViewById(R.id.buttonAccount);
+        Button btnlogin=findViewById(R.id.buttonSignOff);
         atras = findViewById(R.id.botonAtras);
         btnlogin.setOnClickListener(v -> logIn());
 
@@ -119,12 +118,12 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if(response.body()!=null) {
-                    Toast.makeText(SignUpActivity.this,"Se registro usuario correctamente",Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(SignUpActivity.this, ActivityMain.class);
+                    Toast.makeText(ActivitySignUp.this,"Se registro usuario correctamente",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ActivitySignUp.this, ActivityLogin.class);
                     startActivity(intent);
                 }
                 else{
-                    Toast.makeText(SignUpActivity.this,"Usuario no registrado, es probable que el usuario ya se encuentre en uso",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivitySignUp.this,"Usuario no registrado, es probable que el usuario ya se encuentre en uso",Toast.LENGTH_SHORT).show();
                 }
             }
 
