@@ -7,83 +7,104 @@
     android:layout_height="match_parent">
 
     <ImageButton
+        android:id="@+id/botonAtras"
         android:layout_width="100sp"
         android:layout_height="60sp"
-        android:id="@+id/botonAtras"
         android:src="@drawable/abc_vector_test"
         tools:ignore="MissingConstraints">
 
     </ImageButton>
 
-    <TextView
-        android:id="@+id/textRegistrar"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
-        android:text="Ingresar Datos"
-        android:layout_marginTop="30sp"
-        android:textColor="#303F9F"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/editName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Nombre"
-        android:inputType="textPersonName"
-        android:layout_gravity="center"
-        android:layout_marginTop="40sp"
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/editLastName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Apellido"
-        android:inputType="textPersonName"
-        android:layout_gravity="center"
-        android:layout_marginTop="40sp"/>
+            <TextView
+                android:id="@+id/textRegistrar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30sp"
+                android:text="Ingresar Datos"
+                android:textColor="#303F9F"
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/editEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:layout_gravity="center"
-        android:layout_marginTop="40sp"/>
+            <EditText
+                android:id="@+id/editName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="40sp"
+                android:ems="10"
+                android:hint="Nombre"
+                android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/editPhone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Teléfono"
-        android:inputType="phone"
-        android:layout_gravity="center"
-        android:layout_marginTop="40sp"/>
+            <EditText
+                android:id="@+id/editLastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="40sp"
+                android:ems="10"
+                android:hint="Apellido"
+                android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/editPass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Contraseña"
-        android:inputType="textPassword"
-        android:layout_gravity="center"
-        android:layout_marginTop="40sp"/>
+            <EditText
+                android:id="@+id/editEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="40sp"
+                android:ems="10"
+                android:hint="Email"
+                android:inputType="textEmailAddress" />
 
-    <Button
-        android:id="@+id/buttonAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Registrar"
-        android:textAllCaps="false"
-        android:layout_gravity="center"
-        android:layout_marginTop="40sp"/>
+            <EditText
+                android:id="@+id/editPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="40sp"
+                android:ems="10"
+                android:hint="Teléfono"
+                android:inputType="phone" />
+
+            <EditText
+                android:id="@+id/editPass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="40sp"
+                android:ems="10"
+                android:hint="Contraseña"
+                android:inputType="textPassword" />
+
+            <EditText
+                android:id="@+id/editConfirmPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="40sp"
+                android:ems="10"
+                android:hint="Confirmar Contraseña"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/buttonAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="40sp"
+                android:text="Registrar"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

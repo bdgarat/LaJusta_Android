@@ -21,6 +21,10 @@ public class Nodo {
         this.phone = phone;
     }
 
+    public Nodo() {
+
+    }
+
     public Address getAddress() {
         return address;
     }

@@ -28,6 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText name;
     EditText email;
     EditText password;
+    EditText confirmPassword;
     EditText lastname;
     EditText phone;
     ImageButton atras;
@@ -43,6 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
         phone = findViewById(R.id.editPhone);
         email = findViewById(R.id.editEmail);
         password = findViewById(R.id.editPass);
+        confirmPassword = findViewById(R.id.editConfirmPassword);
         Button btnlogin=findViewById(R.id.buttonAccount);
         atras = findViewById(R.id.botonAtras);
         btnlogin.setOnClickListener(v -> logIn());
@@ -59,6 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
         String nombre=name.getText().toString();
         String mail=email.getText().toString().trim();
         String contra=password.getText().toString();
+        String confirmarContra=confirmPassword.getText().toString();
         String apellido=lastname.getText().toString();
         String telefono=phone.getText().toString();
 
@@ -85,6 +88,11 @@ public class SignUpActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(contra)){
             password.setError("Ingresar Contraseña");
             password.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(confirmarContra) || confirmarContra.compareTo(contra) != 0){
+            confirmPassword.setError("Verifique que la contraseña sea la misma en ambos campos");
+            confirmPassword.requestFocus();
             return;
         }
         //Creacion del objeto mapper
