@@ -31,7 +31,8 @@
             android:label="@string/title_activity__inicio"
             android:theme="@style/Theme.LaJusta.NoActionBar" />
         <activity android:name=".ActivitySignUp" />
-        <activity android:name=".ActivityMain" />
+        <activity android:name=".ActivityMain"
+            android:theme="@style/Theme.LaJusta.NoActionBar"/>
         <activity android:name=".ActivityReceta" />
         <activity android:name=".ActivityMasInfo"/>
         <activity android:name=".ActivityMapaNodos"/>

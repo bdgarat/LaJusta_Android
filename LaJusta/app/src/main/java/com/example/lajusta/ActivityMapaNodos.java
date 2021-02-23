@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lajusta.Interface.APICall;
+import com.example.lajusta.model.APIManejo;
 import com.example.lajusta.model.Category;
 import com.example.lajusta.model.Nodo;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -54,18 +55,8 @@ public class ActivityMapaNodos extends AppCompatActivity {
 
         ActivityMapaNodos estoMismo = this;
 
-        //Creacion del objeto mapper
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        //instanciacion del retrofit con los parametros correspondientes
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://ec2-3-235-40-183.compute-1.amazonaws.com")
-                .addConverterFactory(JacksonConverterFactory.create(mapper))
-                .build();
-
-        //inicia el servicio, ya se puede consumir
-        APICall service = retrofit.create(APICall.class);
+        APIManejo apiManejo = new APIManejo();
+        APICall service = apiManejo.crearService();
 
         //Hace la consulta HTTP de forma asincronica, una vez que esté la respuesta, se ejecuta
         // el onResponse()

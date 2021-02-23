@@ -1,6 +1,7 @@
 package com.example.lajusta;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,9 +14,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lajusta.Interface.APICall;
+import com.example.lajusta.model.APIManejo;
+import com.example.lajusta.model.General;
 import com.example.lajusta.model.User;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -94,18 +98,9 @@ public class ActivitySignUp extends AppCompatActivity {
             confirmPassword.requestFocus();
             return;
         }
-        //Creacion del objeto mapper
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        //instanciacion del retrofit con los parametros correspondientes
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://ec2-3-235-40-183.compute-1.amazonaws.com/swagger-ui/")
-                .addConverterFactory(JacksonConverterFactory.create(mapper))
-                .build();
-
-        //inicia el servicio, ya se puede consumir
-        APICall service = retrofit.create(APICall.class);
+        APIManejo apiManejo = new APIManejo();
+        APICall service = apiManejo.crearService();
 
         User registrarUser = new User();
         registrarUser.setEmail(mail);

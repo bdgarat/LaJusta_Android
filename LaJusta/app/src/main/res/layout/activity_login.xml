@@ -16,15 +16,6 @@
             android:layout_height="150sp"
             android:src="@mipmap/lajustalogopositivonegro" />
 
-        <Button
-            android:id="@+id/btnmasinfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sobre Nosotros"
-            android:layout_marginBottom="50sp"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textAllCaps="false" />
 
         <TextView
             android:id="@+id/textLoguear"

@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.lajusta.Interface.APICall;
+import com.example.lajusta.model.APIManejo;
 import com.example.lajusta.model.Carrito;
 import com.example.lajusta.model.Category;
 import com.example.lajusta.model.Product;
@@ -53,19 +54,6 @@ public class ActivityCompra extends AppCompatActivity {
         searchView = (SearchView) findViewById(R.id.searchView);
         layoutCarrito = findViewById(R.id.layoutCarrito);
 
-        //Creacion del objeto mapper
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        //instanciacion del retrofit con los parametros correspondientes
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://ec2-3-235-40-183.compute-1.amazonaws.com/swagger-ui/")
-                .addConverterFactory(JacksonConverterFactory.create(mapper))
-                .build();
-
-        //inicia el servicio, ya se puede consumir
-        APICall service = retrofit.create(APICall.class);
-
         SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
         signed_off = !sharedPreferences.getBoolean("SignedIn", false);
 
@@ -97,6 +85,10 @@ public class ActivityCompra extends AppCompatActivity {
 
             }
         });
+
+        APIManejo apiManejo = new APIManejo();
+        APICall service = apiManejo.crearService();
+
         //Hace la consulta HTTP de forma asincronica, una vez que esté la respuesta, se ejecuta
         // el onResponse()
         service.getCategories().enqueue(new Callback<ArrayList<Category>>() {
@@ -133,10 +125,12 @@ public class ActivityCompra extends AppCompatActivity {
                     }
                     @Override
                     public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
+                        Toast.makeText(ActivityCompra.this,"Error del servidor",Toast.LENGTH_SHORT).show();
                         System.out.println("No se obtuvieron los productos");
                     }}); }
             @Override
             public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
+                Toast.makeText(ActivityCompra.this,"Error del servidor",Toast.LENGTH_SHORT).show();
                 System.out.println("No se obtuvieron las categorias");
             }
         });

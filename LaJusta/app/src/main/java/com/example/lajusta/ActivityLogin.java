@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lajusta.Interface.APICall;
+import com.example.lajusta.model.APIManejo;
 import com.example.lajusta.model.LoginUser;
 import com.example.lajusta.model.Token;
 import com.example.lajusta.model.User;
@@ -34,7 +35,6 @@ public class ActivityLogin extends AppCompatActivity {
             setContentView(R.layout.activity_login);
 
             Button registrar=findViewById(R.id.registrar);
-            Button sobreNosotros=findViewById(R.id.btnmasinfo);
             email=findViewById(R.id.username);
             password=findViewById(R.id.password);
             email.setText("");
@@ -43,7 +43,6 @@ public class ActivityLogin extends AppCompatActivity {
             btnlogin.setOnClickListener(v -> logIn());
 
             registrar.setOnClickListener(v -> startActivity(new Intent(ActivityLogin.this, ActivitySignUp.class)));
-            sobreNosotros.setOnClickListener(v -> startActivity(new Intent(ActivityLogin.this,ActivityMasInfo.class)));
     }
 
     private void logIn() {
@@ -59,18 +58,9 @@ public class ActivityLogin extends AppCompatActivity {
             password.requestFocus();
             return;
         }
-        //Creacion del objeto mapper
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        APIManejo apiManejo = new APIManejo();
+        APICall service = apiManejo.crearService();
 
-        //instanciacion del retrofit con los parametros correspondientes
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://ec2-3-235-40-183.compute-1.amazonaws.com/swagger-ui/")
-                .addConverterFactory(JacksonConverterFactory.create(mapper))
-                .build();
-
-        //inicia el servicio, ya se puede consumir
-        APICall service = retrofit.create(APICall.class);
         LoginUser loginUser = new LoginUser();
         loginUser.setUserName(name);
         loginUser.setUserPassword(contra);
@@ -94,9 +84,8 @@ public class ActivityLogin extends AppCompatActivity {
                     String json = gson.toJson(token);
                     editor.putString("usuarioToken", json);
                     editor.apply();
-                    intent.putExtra("valorToken",token.getValue());
                     startActivity(intent);
-                    Toast.makeText(ActivityLogin.this,"Bienvenido "+user.getFirstName(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityLogin.this,"Bienvenido",Toast.LENGTH_SHORT).show();
                 }
                 else{
                     Toast.makeText(ActivityLogin.this,"Usuario y/o contraseña incorrectos",Toast.LENGTH_SHORT).show();

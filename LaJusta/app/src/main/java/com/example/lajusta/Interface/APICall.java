@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.lajusta.model.Address;
 import com.example.lajusta.model.Cart;
 import com.example.lajusta.model.Category;
+import com.example.lajusta.model.General;
 import com.example.lajusta.model.LoginUser;
 import com.example.lajusta.model.Nodo;
 import com.example.lajusta.model.Product;
@@ -45,4 +46,16 @@ public interface APICall {
 
     @GET("/api/node")
     Call<ArrayList<Nodo>> getNodes();
+
+    @POST("/api/cart")
+    Call<Cart> saveCart(@Body Cart cart, @Header("Authorization") String auth);
+
+    @GET("/api/cart/{id}")
+    Call<Cart> getCart(@Path("id") int id,@Header("Authorization") String auth);
+
+    @POST("/api/cart/activate/{id}")
+    Call<Cart> activateCart(@Path("id") int id,@Header("Authorization") String auth);
+
+    @GET("/api/general/active")
+    Call<General> getActive();
 }
