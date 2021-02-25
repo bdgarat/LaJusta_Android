@@ -1,7 +1,6 @@
 package com.example.lajusta;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,17 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lajusta.Interface.APICall;
 import com.example.lajusta.model.APIManejo;
-import com.example.lajusta.model.General;
 import com.example.lajusta.model.User;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class ActivitySignUp extends AppCompatActivity {
     EditText name;
@@ -41,7 +34,7 @@ public class ActivitySignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        TextView text = findViewById(R.id.textPerfil);
+        TextView text = findViewById(R.id.textProducto);
         name = findViewById(R.id.editName);
         lastname = findViewById(R.id.editLastName);
         phone = findViewById(R.id.editPhone);
@@ -50,6 +43,8 @@ public class ActivitySignUp extends AppCompatActivity {
         confirmPassword = findViewById(R.id.editConfirmPassword);
         Button btnlogin=findViewById(R.id.buttonSignOff);
         atras = findViewById(R.id.botonAtras);
+
+
         btnlogin.setOnClickListener(v -> logIn());
 
         atras.setOnClickListener(new View.OnClickListener() {

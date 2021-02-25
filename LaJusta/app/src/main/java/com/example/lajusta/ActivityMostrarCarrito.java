@@ -7,12 +7,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.lajusta.model.Image;
+import com.example.lajusta.Interface.APICall;
+import com.example.lajusta.model.APIManejo;
+import com.example.lajusta.model.Nodo;
 import com.example.lajusta.model.ProductoEnCarrito;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -20,9 +22,14 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ActivityMostrarCarrito extends AppCompatActivity {
 
     public ListView listado;
+    private ArrayList<Nodo> Nodos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +38,9 @@ public class ActivityMostrarCarrito extends AppCompatActivity {
 
         listado = (ListView) findViewById(R.id.listadoCarrito);
         ImageButton botonS = (ImageButton) findViewById(R.id.botonAtrasCarrito);
-        Button botonC = (Button) findViewById(R.id.botonConfirmarC);
+        Button botonC = (Button) findViewById(R.id.botonConfirmarCarrito);
+        botonC.setVisibility(View.GONE); //Se setea en gone la visibilidad hasta que termine de obtener los nodos
+        Toast.makeText(this.getApplicationContext(),"Por favor, verifique que la lista de productos sea la correcta",Toast.LENGTH_SHORT).show();
 
         botonS.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,10 +65,30 @@ public class ActivityMostrarCarrito extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(ActivityMostrarCarrito.this, ActivityTicket.class);
+                //Gson gson = new Gson();
+                //String strNodos = gson.toJson(Nodos);
+                //i.putExtra("nodos", strNodos);
                 i.putExtra("total",totalDelCarrito);
                 startActivity(i);
             }
         });
 
-    }
-}
+        APIManejo apiManejo = new APIManejo();
+        APICall service = apiManejo.crearService();
+
+        //Hace la consulta HTTP de forma asincronica, una vez que esté la respuesta, se ejecuta
+        // el onResponse()
+        service.getNodes().enqueue(new Callback<ArrayList<Nodo>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Nodo>> call, Response<ArrayList<Nodo>> response) {
+                //Crea la vista del listado de productos
+                Nodos = response.body();
+                botonC.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Nodo>> call, Throwable t) {
+
+            }
+        });}}

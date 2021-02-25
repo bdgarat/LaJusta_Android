@@ -1,7 +1,7 @@
  package com.example.lajusta;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
@@ -22,12 +21,10 @@ import com.example.lajusta.model.Category;
 import com.example.lajusta.model.Image;
 import com.example.lajusta.model.Product;
 import com.example.lajusta.model.ProductoEnCarrito;
-import com.example.lajusta.model.Receta;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static android.os.SystemClock.sleep;
 
  public class CustomExpListViewAdapter extends BaseExpandableListAdapter implements Filterable{
 
@@ -114,15 +111,20 @@ import static android.os.SystemClock.sleep;
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(producto.getDescription()!=null){
+                /*if(producto.getDescription()!=null){
                     Toast.makeText(context.getApplicationContext(),producto.getDescription(),Toast.LENGTH_LONG).show();
-                }
+                }*/
+                Intent i = new Intent(context, ActivityVerProducto.class);
+                Gson gson = new Gson();
+                String jsonProducto = gson.toJson(producto);
+                i.putExtra("JSON_PRODUCTO",jsonProducto);
+                context.startActivity(i);
             }
         });
 
         //obtiene los elementos de la vista
-        TextView nombre = (TextView) convertView.findViewById(R.id.nombre);
-        TextView descripcion = (TextView) convertView.findViewById(R.id.descripcion);
+        TextView nombre = (TextView) convertView.findViewById(R.id.nombreNodo);
+        TextView descripcion = (TextView) convertView.findViewById(R.id.descripcionNodo);
         TextView precio = (TextView) convertView.findViewById(R.id.precio);
         ImageView imagen = (ImageView) convertView.findViewById(R.id.imagen);
         ImageButton sumar = (ImageButton) convertView.findViewById(R.id.botonSumar);
@@ -232,6 +234,10 @@ import static android.os.SystemClock.sleep;
             }
         };
         return filter;
+    }
+
+    public void verProducto() {
+
     }
 }
 

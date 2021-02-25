@@ -21,8 +21,8 @@ public class ActivityPerfil  extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil_usuario);
 
-        TextView nombreUsuario = findViewById(R.id.textPerfilNombreUsuario);
-        TextView apellidoUsuario = findViewById(R.id.textPerfilApellidoUsuario);
+        TextView nombreUsuario = findViewById(R.id.textDescripcionProducto);
+        TextView apellidoUsuario = findViewById(R.id.textPrecioProducto);
         TextView emailUsuario = findViewById(R.id.textPerfilEmail);
         TextView telefonoUsuario = findViewById(R.id.textPerfilTelefono);
         Button cerrarSesion = findViewById(R.id.buttonSignOff);

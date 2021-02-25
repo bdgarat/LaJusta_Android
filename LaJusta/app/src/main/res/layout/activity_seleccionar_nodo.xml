@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/textVisualizarNodo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/botonAtrasNodo"
+            android:layout_width="100sp"
+            android:layout_height="60sp"
+            android:src="@drawable/abc_vector_test" />
+
+
+        <Button
+            android:id="@+id/botonConfirmarNodo"
+            android:layout_width="wrap_content"
+            android:layout_height="60sp"
+            android:layout_centerInParent="true"
+            android:text="Confirmar Nodo"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/listadoNodo"
+        android:layout_width="match_parent"
+        android:layout_height="252dp"
+        android:layout_marginTop="10sp">
+
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textInformativoUbicacionNodo"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:text="Ubicacion del Nodo dentro del Mapa:"
+            android:textSize="24sp" />
+
+        <org.osmdroid.views.MapView
+            android:id="@+id/mapaSeleccionarNodos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</LinearLayout>

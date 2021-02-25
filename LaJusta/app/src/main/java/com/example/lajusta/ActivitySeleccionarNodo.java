@@ -1,6 +1,5 @@
 package com.example.lajusta;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -10,10 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lajusta.Interface.APICall;
 import com.example.lajusta.model.APIManejo;
-import com.example.lajusta.model.Category;
 import com.example.lajusta.model.Nodo;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -22,7 +18,6 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
-import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
@@ -33,19 +28,25 @@ import java.util.ListIterator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
-public class ActivityMapaNodos extends AppCompatActivity {
+public class ActivitySeleccionarNodo extends AppCompatActivity {
     MapView map = null;
     private ArrayList<Nodo> Nodos;
+    private String nodoSeleccionado;
+
+    /* Fede, aca lo que se haría es obtener el nombre del titulo del nodo seleccionado y ponerlo en el string nodoSeleccionado,
+    eso deberia de ya filtrar los resultados y visualizar el que se busca. Cualquier cosa, va a imprimir por debug algo seguro
+    Esta todo bastante comentado, de que hace cada cosa.
+       Dentro de la vista de los nodos, le puse un radiobutton, la idea seria que al hacer click, se muestre eso visualmente
+       como seleccionado y se cambie dinamicamente a la ubicacion nueva del mapa. No se si lo hará al momento de cambiar el
+       contenido de nodoSeleccionado */
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Context ctx = getApplicationContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
-        setContentView(R.layout.mapa_osmdroid);
-        map = (MapView) findViewById(R.id.mapaNodos);
+        setContentView(R.layout.activity_seleccionar_nodo);
+        map = (MapView) findViewById(R.id.mapaSeleccionarNodos);
         map.setTileSource(TileSourceFactory.MAPNIK);
 
         IMapController mapController = map.getController();
@@ -53,7 +54,7 @@ public class ActivityMapaNodos extends AppCompatActivity {
 
         Toast.makeText(this.getApplicationContext(),"Espere mientras se obtienen los Nodos",Toast.LENGTH_SHORT).show();
 
-        ActivityMapaNodos estoMismo = this;
+        ActivitySeleccionarNodo estoMismo = this;
 
         APIManejo apiManejo = new APIManejo();
         APICall service = apiManejo.crearService();
@@ -73,7 +74,6 @@ public class ActivityMapaNodos extends AppCompatActivity {
                     nodosEntrega.add(new OverlayItem(Nodos.get(i).getName(), Nodos.get(i).getName(), geop));
                 }
 
-                String nodoSeleccionado = getIntent().getStringExtra("EXTRA_NOMBRE_NODO"); //Obtiene algun nombre de nodo que se quiera centrar dentro del mapa por parametro
                 if (nodoSeleccionado == null) {
                     if(nodosEntrega.get(0).getPoint() != null) {
                         mapController.setCenter(nodosEntrega.get(0).getPoint()); //Si no hay un nodo seleccionado para centrar, se centra el primero que haya
@@ -122,35 +122,6 @@ public class ActivityMapaNodos extends AppCompatActivity {
                 System.out.println("No se obtuvieron los nodos");
             }
         });
-
-
-
-
-        /*
-        //GeoPoint con los nodos cargados
-        GeoPoint nodoLaHormiguera = new GeoPoint(-34.9228948,-57.9422703);
-        GeoPoint nodoCNCT = new GeoPoint(-35.0890685,-57.9246753); //Las coordenadas estan mal. No tengo idea donde queda el nodo
-        GeoPoint nodoADULP = new GeoPoint(-34.9094548,-57.9631481);
-        GeoPoint nodoATULP = new GeoPoint(-34.913084,-57.9669367);
-        GeoPoint nodoFacultadAgronomia = new GeoPoint(-34.910088,-57.938226);
-        GeoPoint nodoUBEvita = new GeoPoint(-34.8920261,-57.9887553);
-        GeoPoint nodoCasaBelen = new GeoPoint(-35.0067757,-57.95016); //Las coordenadas estan mal. No tengo idea donde queda el nodo
-        GeoPoint nodoClubGorina = new GeoPoint(-34.9088062,-58.0564834); // idem nodo anterior
-        GeoPoint nodoCDVillaElisa = new GeoPoint(-34.8521699,-58.0875426);
-
-
-        nodosEntrega.add(new OverlayItem("Nodo La Hormiguera", "Nodo La Hormiguera", nodoLaHormiguera));
-        nodosEntrega.add(new OverlayItem("Nodo CNCT", "Nodo CNCT", nodoCNCT));
-        nodosEntrega.add(new OverlayItem("Nodo ADULP", "Nodo ADULP", nodoADULP));
-        nodosEntrega.add(new OverlayItem("Nodo ATULP", "Nodo ATULP", nodoATULP));
-        nodosEntrega.add(new OverlayItem("Nodo Facultad de Agronomia UNLP", "Nodo Facultad de Agronomia UNLP", nodoFacultadAgronomia));
-        nodosEntrega.add(new OverlayItem("Nodo Unidad Basica 'Compañera Evita'", "Nodo Unidad Basica 'Compañera Evita'", nodoUBEvita));
-        nodosEntrega.add(new OverlayItem("Nodo Arturo Seguí: casa de Belén", "Nodo Arturo Seguí: casa de Belén", nodoCasaBelen));
-        nodosEntrega.add(new OverlayItem("Nodo Club de Gorina", "Nodo Club de Gorina", nodoClubGorina));
-        nodosEntrega.add(new OverlayItem("Nodo Club Deportivo Villa Elisa", "Nodo Club Deportivo Villa Elisa", nodoCDVillaElisa));
-        */
-
-
 
     }
 

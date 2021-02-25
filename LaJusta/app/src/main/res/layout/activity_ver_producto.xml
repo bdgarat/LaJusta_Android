@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,15 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <ImageButton
-            android:id="@+id/botonAtras"
-            android:layout_width="100sp"
-            android:layout_height="60sp"
-            android:src="@drawable/abc_vector_test"
-            tools:ignore="MissingConstraints">
-
-        </ImageButton>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -34,9 +25,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="30sp"
-                    android:text="Su perfil en La Justa"
+                    android:text="$nombre_del_producto"
                     android:textColor="#303F9F"
-                    android:textSize="25sp"
+                    android:textSize="36sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -45,8 +36,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="30sp"
-                    android:text="Nombre: "
-                    android:textColor="@color/black"
+                    android:text="$descripcion"
+                    android:textColor="@android:color/darker_gray"
                     android:textSize="25sp"
                     android:textStyle="bold" />
 
@@ -56,45 +47,39 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="30sp"
-                    android:text="Apellido: "
+                    android:text="$precio"
                     android:textColor="@color/black"
-                    android:textSize="25sp"
+                    android:textSize="30sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textPerfilEmail"
+                    android:id="@+id/textLeyendaImagen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_marginTop="30sp"
-                    android:text="E-Mail: "
-                    android:textColor="@color/black"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
+                    android:paddingEnd="50sp"
+                    android:text="Imagen (solo de referencia):"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/imageProducto"
+                    android:layout_width="match_parent"
+                    android:layout_height="382dp"
+                    app:srcCompat="@drawable/carrito2" />
 
                 <TextView
-                    android:id="@+id/textPerfilTelefono"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/textCategoriasProducto"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="30sp"
-                    android:text="Telefono: "
-                    android:textColor="@color/black"
+                    android:text="$categorias_del_producto"
+                    android:textColor="@android:color/darker_gray"
                     android:textSize="25sp"
                     android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/buttonSignOff"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="40sp"
-                    android:text="Cerrar Sesion"
-                    android:textAllCaps="false" />
 
             </LinearLayout>
         </ScrollView>
 
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

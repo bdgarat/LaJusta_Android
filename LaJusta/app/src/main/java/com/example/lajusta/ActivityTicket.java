@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,8 +17,10 @@ import com.example.lajusta.Interface.APICall;
 import com.example.lajusta.model.APIManejo;
 import com.example.lajusta.model.Cart;
 import com.example.lajusta.model.General;
+import com.example.lajusta.model.Nodo;
 import com.example.lajusta.model.ProductoEnCarrito;
 import com.example.lajusta.model.Token;
+import com.example.lajusta.model.User;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -49,15 +53,29 @@ public class ActivityTicket extends AppCompatActivity {
         codigo.setText("Su codigo de compra es #"+String.valueOf(numero));
         total.setText("$"+String.valueOf(totalDelCarrito));
 
+        APIManejo apiManejo = new APIManejo();
+        APICall service = apiManejo.crearService();
+
+        /*service.generateToken(loginUser).enqueue(new Callback<Token>(){
+            @Override
+            public void onResponse(Call<Token> call, Response<Token> response) {
+                if(response.body()!=null) {
+                    User user = response.body().getUser();
+                    String value = response.body().getValue();
+                    Token token = new Token();
+                    token.setUser(user);
+                    token.setValue(value);
+        */
+
 
         //Aca se arma el carrito para guardarlo en la base de datos
         SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("task list",null);
-        Type type = new TypeToken<ArrayList<ProductoEnCarrito>>() {}.getType();
-        ArrayList<ProductoEnCarrito> carrito = gson.fromJson(json,type);
+        Type typeProdsCarrito = new TypeToken<ArrayList<ProductoEnCarrito>>() {}.getType();
+        ArrayList<ProductoEnCarrito> carrito = gson.fromJson(json,typeProdsCarrito);
         Cart cart = new Cart();
-        cart.convertirCartParaGuardar(carrito);
+        //cart.convertirCartParaGuardar(carrito);
         cart.setTotal(cart.calcularPrecio());
         json = sharedPreferences.getString("usuarioToken","");
         Token usuarioLogin= gson.fromJson(json,Token.class);
@@ -75,10 +93,33 @@ public class ActivityTicket extends AppCompatActivity {
         String nodoHarcodeado="Nodo harcodeado";
         lugarRetiro.setText("Retire su compra en el nodo: "+nodoHarcodeado);
 
-        APIManejo apiManejo = new APIManejo();
-        APICall service = apiManejo.crearService();
 
-        service.saveCart(cart,usuarioLogin.getValue()).enqueue(new Callback<Cart>() {
+        /*
+        Spinner spinner = findViewById(R.id.spinnerNodoRetiro);
+        String strNodos = this.getIntent().getStringExtra("nodos");
+        Type typeNodos = new TypeToken<ArrayList<Nodo>>() {}.getType();
+        ArrayList<Nodo> nodos= gson.fromJson(strNodos, typeNodos);
+        ArrayList<String> nombreNodos = null;
+        if(nombreNodos != null) {
+            for (int i = 0; i < nodos.size(); i++) {
+                nombreNodos.add(nodos.get(i).getName());
+            }
+            // Create an ArrayAdapter using the string array and a default spinner
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, nombreNodos);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+        }
+        */
+
+
+
+
+
+
+
+
+
+        service.saveCart(cart, "Bearer " + usuarioLogin.getValue()).enqueue(new Callback<Cart>() {
             @Override
             public void onResponse(Call<Cart> call, Response<Cart> response) {
                 Toast.makeText(ActivityTicket.this,"El carrito se guardo exitosamente en la bd",Toast.LENGTH_SHORT).show();
@@ -86,7 +127,7 @@ public class ActivityTicket extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Cart> call, Throwable t) {
-
+                Toast.makeText(ActivityTicket.this,"Malio sal :(",Toast.LENGTH_SHORT).show();
             }
         });
 
