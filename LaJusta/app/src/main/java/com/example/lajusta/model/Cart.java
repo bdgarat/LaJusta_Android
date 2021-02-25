@@ -1,10 +1,8 @@
 package com.example.lajusta.model;
 
-import java.util.ArrayList;
-
 public class Cart {
     public String approvedAt;
-    public ArrayList<CartProduct> cartProducts;
+    public CartProduct[] cartProducts;
     public String deletedAt;
     public String delivered;
     public General general;
@@ -15,23 +13,7 @@ public class Cart {
     public User user;
 
     public Cart() {
-        cartProducts= new ArrayList<>();
     }
-
-    public void convertirCartParaGuardar(ArrayList<ProductoEnCarrito> carrito){
-        Cart cart = new Cart();
-        for(ProductoEnCarrito p: carrito){
-            cart.agregarProducto(p);
-        }
-    }
-
-    public void agregarProducto(ProductoEnCarrito p){
-        CartProduct cartProduct = new CartProduct();
-        cartProduct.setProduct(p.getProducto());
-        cartProduct.setQuantity(p.getCantidad());
-        cartProducts.add(cartProduct);
-    }
-
     public double calcularPrecio(){
         double total=0;
         for(CartProduct c: cartProducts){
@@ -48,11 +30,11 @@ public class Cart {
         this.approvedAt = approvedAt;
     }
 
-    public ArrayList<CartProduct> getCartProducts() {
+    public CartProduct[] getCartProducts() {
         return cartProducts;
     }
 
-    public void setCartProducts(ArrayList<CartProduct> cartProducts) {
+    public void setCartProducts(CartProduct[] cartProducts) {
         this.cartProducts = cartProducts;
     }
 

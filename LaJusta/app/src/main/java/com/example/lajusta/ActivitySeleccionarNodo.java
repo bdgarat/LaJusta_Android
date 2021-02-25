@@ -1,15 +1,24 @@
 package com.example.lajusta;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lajusta.Interface.APICall;
 import com.example.lajusta.model.APIManejo;
+import com.example.lajusta.model.AvailableNode;
+import com.example.lajusta.model.CartProduct;
+import com.example.lajusta.model.General;
 import com.example.lajusta.model.Nodo;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -22,6 +31,7 @@ import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
@@ -48,17 +58,43 @@ public class ActivitySeleccionarNodo extends AppCompatActivity {
         setContentView(R.layout.activity_seleccionar_nodo);
         map = (MapView) findViewById(R.id.mapaSeleccionarNodos);
         map.setTileSource(TileSourceFactory.MAPNIK);
+        ListView listado = findViewById(R.id.listadoNodo);
 
         IMapController mapController = map.getController();
         mapController.setZoom(16.0); //Realiza un zoom
 
-        Toast.makeText(this.getApplicationContext(),"Espere mientras se obtienen los Nodos",Toast.LENGTH_SHORT).show();
-
         ActivitySeleccionarNodo estoMismo = this;
+
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("general",null);
+        Type type = new TypeToken<General>() {}.getType();
+        General general = gson.fromJson(json,type);
+
+        //Pasa los nodos disponibles de Array a ArrayList para poder manejar mejor el Adapter
+        ArrayList<AvailableNode> nodos = new ArrayList<>();
+        for(int i=0;i<general.getActiveNodes().length;i++){
+            nodos.add(general.getActiveNodes()[i]);
+        }
+
+        AvailableNode nodoSeleccionado=null;
+
+        CustomAdapterListadoNodos adapter = new CustomAdapterListadoNodos(nodos,nodoSeleccionado,this,R.layout.nodos);
+        listado.setAdapter(adapter);
+
+        //Esto es para que se pueda seleccionar solo 1, sino se podian apretar mas de 1
+        listado.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                adapter.setSelectedIndex(position);
+                adapter.notifyDataSetChanged();
+            }
+        });
 
         APIManejo apiManejo = new APIManejo();
         APICall service = apiManejo.crearService();
 
+       /*
         //Hace la consulta HTTP de forma asincronica, una vez que esté la respuesta, se ejecuta
         // el onResponse()
         service.getNodes().enqueue(new Callback<ArrayList<Nodo>>() {
@@ -122,6 +158,8 @@ public class ActivitySeleccionarNodo extends AppCompatActivity {
                 System.out.println("No se obtuvieron los nodos");
             }
         });
+
+        */
 
     }
 

@@ -41,7 +41,10 @@
             android:layout_width="148dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Seleccionado" />
+            android:text="Seleccionado"
+            android:checked="false"
+            android:focusable="false"
+            android:clickable="false"/>
 
     </LinearLayout>
 

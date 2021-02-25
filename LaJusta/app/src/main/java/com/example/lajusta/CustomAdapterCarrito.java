@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.lajusta.model.CartProduct;
 import com.example.lajusta.model.Product;
 import com.example.lajusta.model.ProductoEnCarrito;
 
@@ -14,16 +15,12 @@ import java.util.ArrayList;
 
 public class CustomAdapterCarrito extends BaseAdapter {
 
-    private ArrayList<ProductoEnCarrito> productosCarrito;
+    private ArrayList<CartProduct> productosCarrito;
     private double totalCarrito;
     private Context context;
     private int mResource;
-    private TextView nombre;
-    private TextView precio;
-    private TextView cantidad;
-    private TextView subtotal;
 
-    public CustomAdapterCarrito(ArrayList<ProductoEnCarrito> productosCarrito, double totalCarrito, Context context, int mResource) {
+    public CustomAdapterCarrito(ArrayList<CartProduct> productosCarrito, double totalCarrito, Context context, int mResource) {
         this.productosCarrito = productosCarrito;
         this.totalCarrito = totalCarrito;
         this.context = context;
@@ -36,7 +33,7 @@ public class CustomAdapterCarrito extends BaseAdapter {
     }
 
     @Override
-    public ProductoEnCarrito getItem(int position) {
+    public CartProduct getItem(int position) {
         return productosCarrito.get(position);
     }
 
@@ -47,8 +44,8 @@ public class CustomAdapterCarrito extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Product producto = getItem(position).getProducto();
-        int cantidad = getItem(position).getCantidad();
+        Product producto = getItem(position).getProduct();
+        int cantidad = getItem(position).getQuantity();
 
         LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.producto_en_carrito,null);

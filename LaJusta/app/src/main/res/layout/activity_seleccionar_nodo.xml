@@ -30,6 +30,13 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/textInformativoListadoNodos"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:text="Seleccionar nodo donde retirar:"
+        android:textSize="24sp" />
+
     <ListView
         android:id="@+id/listadoNodo"
         android:layout_width="match_parent"
@@ -47,7 +54,7 @@
             android:id="@+id/textInformativoUbicacionNodo"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:text="Ubicacion del Nodo dentro del Mapa:"
+            android:text="Ubicacion del nodo en mapa:"
             android:textSize="24sp" />
 
         <org.osmdroid.views.MapView

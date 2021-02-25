@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.lajusta.Interface.APICall;
 import com.example.lajusta.model.APIManejo;
 import com.example.lajusta.model.Carrito;
+import com.example.lajusta.model.CartProduct;
 import com.example.lajusta.model.Category;
 import com.example.lajusta.model.Product;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -65,21 +66,20 @@ public class ActivityCompra extends AppCompatActivity {
 
         TextView totalParcial = (TextView) this.findViewById(R.id.totalParcial);
         ImageButton verCarrito = this.findViewById(R.id.carrito);
-        carrito = new Carrito();
+        ArrayList<CartProduct> productosComprados = new ArrayList<>();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         verCarrito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (carrito.getProductos().isEmpty()) {
+                if (productosComprados.isEmpty()) {
                     Toast.makeText(ActivityCompra.this, "El Carrito de Compras está vacio!", Toast.LENGTH_LONG).show();
                 } else {
-                    Intent i = new Intent(ActivityCompra.this, ActivityMostrarCarrito.class);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
                     Gson gson = new Gson();
-                    String json = gson.toJson(carrito.getProductos());
-                    editor.putString("task list", json);
-                    editor.apply();
-                    i.putExtra("total",carrito.calcularPrecio());
+                    String json = gson.toJson(productosComprados);
+                    editor.putString("compras",json);
+                    editor.commit();
+                    Intent i = new Intent(ActivityCompra.this, ActivityMostrarCarrito.class);
                     startActivity(i);
                 }
 
@@ -107,7 +107,7 @@ public class ActivityCompra extends AppCompatActivity {
                         //Genera un hashmap, cada categoria contiene sus productos
                         HashMap<Integer, ArrayList<Product>> prodCategorias = obtenerProductosPorCategoria(categorias,productos);
                         //ExpAdapter maneja la vista de la Expandable List view y las interacciones
-                        adapter = new CustomExpListViewAdapter(categorias, prodCategorias, carrito, totalParcial, signed_off,ActivityCompra.this);
+                        adapter = new CustomExpListViewAdapter(categorias, prodCategorias, productosComprados, totalParcial, signed_off,ActivityCompra.this);
                         listado.setAdapter(adapter);
                         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                             @Override

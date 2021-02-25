@@ -17,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lajusta.model.Carrito;
+import com.example.lajusta.model.Cart;
+import com.example.lajusta.model.CartProduct;
 import com.example.lajusta.model.Category;
 import com.example.lajusta.model.Image;
 import com.example.lajusta.model.Product;
@@ -32,11 +34,11 @@ import java.util.HashMap;
     private ArrayList<Category> listFilter;
     private Context context;
     private HashMap<Integer,ArrayList<Product>> prod;
-    private Carrito carrito;
+    private ArrayList<CartProduct> carrito;
     private TextView saldoGastado;
     private boolean signed_off;
 
-    public CustomExpListViewAdapter(ArrayList<Category> listCategories, HashMap<Integer,ArrayList<Product>> prod, Carrito carrito, TextView totalParcial, boolean signed_off, Context context) {
+    public CustomExpListViewAdapter(ArrayList<Category> listCategories, HashMap<Integer,ArrayList<Product>> prod, ArrayList<CartProduct> carrito, TextView totalParcial, boolean signed_off, Context context) {
         this.listCategories = listCategories;
         this.listFilter = listCategories;
         this.prod=prod;
@@ -153,9 +155,9 @@ import java.util.HashMap;
 
         //setea la cantidad seleccionada del producto
         boolean hayCantidad = false;
-        for (ProductoEnCarrito p : carrito.getProductos()) {
-            if (p.getProducto().equals(producto)) {
-                cantidad.setText(String.valueOf(p.getCantidad()));
+        for (CartProduct p : carrito) {
+            if (p.getProduct().equals(producto)) {
+                cantidad.setText(String.valueOf(p.getQuantity()));
                 hayCantidad = true;
             }
         }
@@ -165,19 +167,19 @@ import java.util.HashMap;
 
         //onClick para cuando apreta en agregar producto
         sumar.setOnClickListener(v -> {
-            ProductoEnCarrito productoASumar = carrito.agregarProducto(producto);
-            cantidad.setText(String.valueOf(productoASumar.getCantidad()));
-            saldoGastado.setText("Total Parcial $" + String.valueOf(carrito.calcularPrecio()));
+            CartProduct c = this.agregarProducto(producto);
+            cantidad.setText(String.valueOf(c.getQuantity()));
+            saldoGastado.setText("Total Parcial $" + String.valueOf(this.precioCarrito()));
             Toast.makeText(context.getApplicationContext(), producto.getTitle() + " agregado exitosamente", Toast.LENGTH_SHORT).show();
         });
 
         //onClick para cuando apreta en eliminar producto
         restar.setOnClickListener(v -> {
-            ProductoEnCarrito productoARestar = carrito.retirarProducto(producto);
-            if (productoARestar != null) {
+            CartProduct productoAEliminar = this.retirarProducto(producto);
+            if (productoAEliminar != null) {
                 Toast.makeText(context.getApplicationContext(), producto.getTitle() + " retirado exitosamente", Toast.LENGTH_SHORT).show();
-                saldoGastado.setText("Total Parcial $" + String.valueOf(carrito.calcularPrecio()));
-                cantidad.setText(String.valueOf(productoARestar.getCantidad()));
+                saldoGastado.setText("Total Parcial $" + String.valueOf(this.precioCarrito()));
+                cantidad.setText(String.valueOf(productoAEliminar.getQuantity()));
             }
         });
 
@@ -236,8 +238,45 @@ import java.util.HashMap;
         return filter;
     }
 
-    public void verProducto() {
+     public CartProduct agregarProducto(Product p){
+         CartProduct productoADevolver= new CartProduct();
+         boolean estaEnCarrito=false;
+         for(CartProduct cp:carrito){
+             if(cp.getProduct().equals(p)){
+                 productoADevolver=cp;
+                 cp.setQuantity(cp.getQuantity()+1);
+                 estaEnCarrito=true;
+                 break;
+             }
+         }
+         if(!estaEnCarrito){
+             productoADevolver.setProduct(p);
+             productoADevolver.setQuantity(1);
+             carrito.add(productoADevolver);
+         }
+         return productoADevolver;
+     }
 
-    }
+     public double precioCarrito(){
+         double total=0;
+         for(CartProduct c: carrito){
+             total+=(c.getProduct().getPrice()*c.getQuantity());
+         }
+         return total;
+     }
+
+     public CartProduct retirarProducto(Product p){
+         for(CartProduct c:carrito){
+             if(c.getProduct()==p){
+                 CartProduct retorno = c;
+                 c.restar();
+                 if(c.getQuantity()==0){
+                     carrito.remove(c);
+                 }
+                 return retorno;
+             }
+         }
+         return null;
+     }
 }
 
