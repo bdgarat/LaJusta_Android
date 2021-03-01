@@ -17,14 +17,16 @@ public class CustomAdapterListadoNodos extends BaseAdapter {
     private Context context;
     private int mResource;
     private int selectedIndex;
-    private AvailableNode nodoSeleccionado;
+    private AvailableNode nodoSelec;
+    private ActivitySeleccionarNodo activity;
 
-    public CustomAdapterListadoNodos(ArrayList<AvailableNode> nodos,AvailableNode nodoSeleccionado,Context context, int mResource){
+    public CustomAdapterListadoNodos(ArrayList<AvailableNode> nodos,AvailableNode nodoSelec,Context context, int mResource, ActivitySeleccionarNodo activity){
         this.nodos=nodos;
         this.context=context;
         this.mResource=mResource;
-        this.nodoSeleccionado=nodoSeleccionado;
+        this.nodoSelec=nodoSelec;
         this.selectedIndex=-1;
+        this.activity=activity;
     }
 
     @Override
@@ -59,8 +61,11 @@ public class CustomAdapterListadoNodos extends BaseAdapter {
 
         //Guardar el nodo seleccionado
         if(selectedIndex == position){
-            nodoSeleccionado=nodo;
+            nodoSelec=nodo;
+            activity.setNodoSeleccionado(nodo);
             radioButton.setChecked(true);
+            activity.crearVisualizarNodo();
+
         }
         else{
             radioButton.setChecked(false);

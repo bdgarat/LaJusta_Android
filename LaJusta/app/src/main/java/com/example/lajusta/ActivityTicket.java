@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.lajusta.Interface.APICall;
 import com.example.lajusta.model.APIManejo;
+import com.example.lajusta.model.AvailableNode;
 import com.example.lajusta.model.Cart;
 import com.example.lajusta.model.General;
 import com.example.lajusta.model.Nodo;
@@ -85,38 +86,12 @@ public class ActivityTicket extends AppCompatActivity {
         cart.setGeneral(general);
         cart.setSaleDate(Calendar.getInstance().getTime().toString());
 
-        //Braian, aca habria que recuperar el nodo seleccionado antes de la compra (por shared pref y mostrar algun
-        // dato para que aparezca el nombre, o poner la direccion tambien.
-
         //cart.setNodeDate(AVAILABLE NODE RECUPERADO DE SHARED PREF);
         TextView lugarRetiro = findViewById(R.id.lugarRetiro);
-        String nodoHarcodeado="Nodo harcodeado";
-        lugarRetiro.setText("Retire su compra en el nodo: "+nodoHarcodeado);
-
-
-        /*
-        Spinner spinner = findViewById(R.id.spinnerNodoRetiro);
-        String strNodos = this.getIntent().getStringExtra("nodos");
-        Type typeNodos = new TypeToken<ArrayList<Nodo>>() {}.getType();
-        ArrayList<Nodo> nodos= gson.fromJson(strNodos, typeNodos);
-        ArrayList<String> nombreNodos = null;
-        if(nombreNodos != null) {
-            for (int i = 0; i < nodos.size(); i++) {
-                nombreNodos.add(nodos.get(i).getName());
-            }
-            // Create an ArrayAdapter using the string array and a default spinner
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, nombreNodos);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
-        }
-        */
-
-
-
-
-
-
-
+        String jsonNodoSeleccionado = sharedPreferences.getString("NODO_SELECCIONADO", null);
+        Type typeNodoSeleccionado = new TypeToken<AvailableNode>() {}.getType();
+        AvailableNode nodoSeleccionado = gson.fromJson(jsonNodoSeleccionado, typeNodoSeleccionado);
+        lugarRetiro.setText("Retire su compra en el nodo: " + nodoSeleccionado.getNode().getName() + ", que se ubica en la direccion: " + nodoSeleccionado.getNode().getAddress().getStreet() + " " + nodoSeleccionado.getNode().getAddress().getNumber() + ", Entre " + nodoSeleccionado.getNode().getAddress().getBetweenStreets());
 
 
         service.saveCart(cart, "Bearer " + usuarioLogin.getValue()).enqueue(new Callback<Cart>() {
