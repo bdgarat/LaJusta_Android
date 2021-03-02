@@ -26,12 +26,14 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="30sp"
                     android:text="$nombre_del_producto"
+                    android:visibility="gone"
                     android:textColor="#303F9F"
                     android:textSize="36sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textDescripcionProducto"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -43,6 +45,7 @@
 
                 <TextView
                     android:id="@+id/textPrecioProducto"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -54,6 +57,7 @@
 
                 <TextView
                     android:id="@+id/textLeyendaImagen"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30sp"
@@ -63,12 +67,14 @@
 
                 <ImageView
                     android:id="@+id/imageProducto"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="382dp"
                     app:srcCompat="@drawable/carrito2" />
 
                 <TextView
                     android:id="@+id/textCategoriasProducto"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

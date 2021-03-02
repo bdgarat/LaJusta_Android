@@ -9,8 +9,6 @@ import android.os.Handler;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 
-import com.google.gson.Gson;
-
 public class ActivityBienvenida extends AppCompatActivity {
 
     private final int DURACION_SPLASH = 2000;

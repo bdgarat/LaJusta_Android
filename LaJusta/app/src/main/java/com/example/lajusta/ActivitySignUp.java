@@ -9,13 +9,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.lajusta.Interface.APICall;
 import com.example.lajusta.model.APIManejo;
 import com.example.lajusta.model.User;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

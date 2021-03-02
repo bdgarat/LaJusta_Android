@@ -1,14 +1,18 @@
 package com.example.lajusta;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
-
 import com.example.lajusta.model.AvailableNode;
+import com.example.lajusta.model.Image;
 
 import java.util.ArrayList;
 
@@ -58,6 +62,18 @@ public class CustomAdapterListadoNodos extends BaseAdapter {
         descNodo.setText(nodo.getNode().getDescription());
 
         RadioButton radioButton = convertView.findViewById(R.id.radioSeleccionNodo);
+
+        ImageView imagen = convertView.findViewById(R.id.imagenNodo);
+        Image img =nodo.getNode().getImage();
+        if(img!=null){
+            String base64Str = img.getValue();
+            if (base64Str != null) {
+                String base64Image = base64Str.split(",")[1];
+                byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                Bitmap decoded = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                imagen.setImageBitmap(decoded);
+            }
+        }
 
         //Guardar el nodo seleccionado
         if(selectedIndex == position){

@@ -7,23 +7,16 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.lajusta.Interface.APICall;
 import com.example.lajusta.model.APIManejo;
 import com.example.lajusta.model.LoginUser;
 import com.example.lajusta.model.Token;
 import com.example.lajusta.model.User;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class ActivityLogin extends AppCompatActivity {
 

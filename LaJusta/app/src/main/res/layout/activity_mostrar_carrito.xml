@@ -12,7 +12,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:layout_width="100sp"
+            android:layout_width="60sp"
             android:layout_height="60sp"
             android:id="@+id/botonAtrasCarrito"
             android:src="@drawable/abc_vector_test" />
@@ -23,9 +23,15 @@
             android:layout_width="wrap_content"
             android:layout_height="60sp"
             android:layout_centerInParent="true"
-            android:text="Donde retirar"
-            android:visibility="visible"
-            tools:visibility="visible" />
+            android:text="Donde retirar" />
+
+        <ImageButton
+            android:id="@+id/botonVaciarCarrito"
+            android:layout_width="60sp"
+            android:layout_height="60sp"
+            android:layout_alignParentRight="true"
+            android:src="@android:drawable/ic_menu_delete"
+            android:text="Restaurar Carrito" />
 
 
     </RelativeLayout>

@@ -1,8 +1,5 @@
 package com.example.lajusta.Interface;
 
-import android.util.Log;
-
-import com.example.lajusta.model.Address;
 import com.example.lajusta.model.Cart;
 import com.example.lajusta.model.Category;
 import com.example.lajusta.model.General;
@@ -11,13 +8,9 @@ import com.example.lajusta.model.Nodo;
 import com.example.lajusta.model.Product;
 import com.example.lajusta.model.Token;
 import com.example.lajusta.model.User;
-
 import java.util.ArrayList;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -28,6 +21,9 @@ public interface APICall {
 
     @GET("/api/product")
     Call<ArrayList<Product>> getProducts();
+
+    @GET("/api/product/{id}")
+    Call<Product> getProduct(@Path("id") long id,@Header("Authorization") String auth);
 
     @GET("/api/category")
     Call<ArrayList<Category>> getCategories();

@@ -1,20 +1,13 @@
 package com.example.lajusta;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.lajusta.Interface.APICall;
 import com.example.lajusta.model.APIManejo;
-import com.example.lajusta.model.Category;
 import com.example.lajusta.model.Nodo;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -22,19 +15,14 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
-import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
-
 import java.util.ArrayList;
 import java.util.ListIterator;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class ActivityMapaNodos extends AppCompatActivity {
     MapView map = null;

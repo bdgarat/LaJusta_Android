@@ -3,12 +3,9 @@ package com.example.lajusta;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-
 import com.example.lajusta.model.Receta;
-
 import java.util.ArrayList;
 
 public class ActivityReceta extends AppCompatActivity {

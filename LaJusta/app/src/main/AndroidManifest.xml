@@ -15,9 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LaJusta"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".ActivityMostrarCarrito"
             android:theme="@style/Theme.LaJusta.NoActionBar" ></activity>
-        <activity android:name=".ActivityLogin" />
+
+        <activity android:name=".ActivityLogin"
+            android:theme="@style/Theme.LaJusta.NoActionBar"/>
+
         <activity android:name=".ActivityBienvenida"
             android:theme="@style/Theme.LaJusta.NoActionBar">
             <intent-filter>
@@ -26,20 +30,41 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivityTicket" />
+
+        <activity android:name=".ActivityTicket"
+            android:theme="@style/Theme.LaJusta.NoActionBar"/>/>
+
         <activity
             android:name=".ActivityCompra"
             android:label="@string/title_activity__inicio"
             android:theme="@style/Theme.LaJusta.NoActionBar" />
-        <activity android:name=".ActivitySignUp" />
+
+        <activity android:name=".ActivitySignUp"
+            android:theme="@style/Theme.LaJusta.NoActionBar"/>
+
         <activity android:name=".ActivityMain"
             android:theme="@style/Theme.LaJusta.NoActionBar"/>
-        <activity android:name=".ActivityReceta" />
-        <activity android:name=".ActivityMasInfo"/>
-        <activity android:name=".ActivityMapaNodos"/>
-        <activity android:name=".ActivityPerfil"/>
-        <activity android:name=".ActivityVerProducto"/>
-        <activity android:name=".ActivitySeleccionarNodo"/>
+
+        <activity android:name=".ActivityReceta"
+            android:theme="@style/Theme.LaJusta.NoActionBar"/>
+
+        <activity android:name=".ActivityMasInfo"
+            android:theme="@style/Theme.LaJusta.NoActionBar"/>
+
+        <activity android:name=".ActivityMapaNodos"
+            android:theme="@style/Theme.LaJusta.NoActionBar"/>
+
+        <activity android:name=".ActivityPerfil"
+            android:theme="@style/Theme.LaJusta.NoActionBar"/>
+
+        <activity android:name=".ActivityVerProducto"
+            android:theme="@style/Theme.LaJusta.NoActionBar"/>
+
+        <activity android:name=".ActivitySeleccionarNodo"
+            android:theme="@style/Theme.LaJusta.NoActionBar"/>
+
+        <activity android:name=".ActivityFaltaStock"
+            android:theme="@style/Theme.LaJusta.NoActionBar"/>
     </application>
 
 </manifest>

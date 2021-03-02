@@ -6,10 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.example.lajusta.model.CartProduct;
 import com.example.lajusta.model.Product;
-import com.example.lajusta.model.ProductoEnCarrito;
 
 import java.util.ArrayList;
 

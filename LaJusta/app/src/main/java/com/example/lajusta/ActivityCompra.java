@@ -1,17 +1,11 @@
 package com.example.lajusta;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -19,40 +13,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.lajusta.Interface.APICall;
 import com.example.lajusta.model.APIManejo;
-import com.example.lajusta.model.Carrito;
 import com.example.lajusta.model.CartProduct;
 import com.example.lajusta.model.Category;
 import com.example.lajusta.model.Product;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-
-import java.io.Serializable;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class ActivityCompra extends AppCompatActivity {
     private ExpandableListView listado;
     private SearchView searchView;
     private ArrayList<Category> categorias;
     private ArrayList<Product> productos;
-    private Carrito carrito;
     private CustomExpListViewAdapter adapter;
     private boolean signed_off;
     private LinearLayout layoutCarrito;
+    private ArrayList<CartProduct> productosComprados;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compra);
 
-        listado = (ExpandableListView) findViewById(R.id.listado);
-        searchView = (SearchView) findViewById(R.id.searchView);
+        listado = findViewById(R.id.listado);
+        searchView = findViewById(R.id.searchView);
         layoutCarrito = findViewById(R.id.layoutCarrito);
 
         SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
@@ -64,10 +53,19 @@ public class ActivityCompra extends AppCompatActivity {
             layoutCarrito.setVisibility(View.VISIBLE);
         }
 
-        TextView totalParcial = (TextView) this.findViewById(R.id.totalParcial);
+        TextView totalParcial = this.findViewById(R.id.totalParcial);
         ImageButton verCarrito = this.findViewById(R.id.carrito);
-        ArrayList<CartProduct> productosComprados = new ArrayList<>();
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("compras",null);
+        Type type = new TypeToken<ArrayList<CartProduct>>() {}.getType();
+        ArrayList<CartProduct> recuperandoProductos = gson.fromJson(json,type);
+        if(recuperandoProductos!=null){
+            productosComprados=recuperandoProductos;
+        }
+        else{
+            productosComprados = new ArrayList<>();
+        }
 
         verCarrito.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +92,6 @@ public class ActivityCompra extends AppCompatActivity {
         service.getCategories().enqueue(new Callback<ArrayList<Category>>() {
             @Override
             public void onResponse(Call<ArrayList<Category>> call, Response<ArrayList<Category>> response) {
-                //Crea la vista del listado de productos
                 categorias = response.body();
 
                 //Hace la consulta HTTP de forma asincronica, una vez que esté la respuesta, se ejecuta

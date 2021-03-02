@@ -16,8 +16,8 @@ public class Cart {
     }
     public double calcularPrecio(){
         double total=0;
-        for(CartProduct c: cartProducts){
-            total+=(c.getProduct().getPrice()*c.getQuantity());
+        for(int i=0;i<cartProducts.length;i++){
+            total+=(cartProducts[i].getQuantity()*cartProducts[i].getProduct().getPrice());
         }
         return total;
     }

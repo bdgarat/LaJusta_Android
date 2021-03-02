@@ -15,16 +15,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.lajusta.model.Carrito;
-import com.example.lajusta.model.Cart;
 import com.example.lajusta.model.CartProduct;
 import com.example.lajusta.model.Category;
 import com.example.lajusta.model.Image;
 import com.example.lajusta.model.Product;
-import com.example.lajusta.model.ProductoEnCarrito;
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -92,7 +86,7 @@ import java.util.HashMap;
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.categorias, null);
         }
-
+        saldoGastado.setText("Total Parcial $" + String.valueOf(this.precioCarrito()));
         TextView text = (TextView) convertView.findViewById(R.id.categorias);
         text.setText(categoria.getName());
 
@@ -113,25 +107,20 @@ import java.util.HashMap;
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*if(producto.getDescription()!=null){
-                    Toast.makeText(context.getApplicationContext(),producto.getDescription(),Toast.LENGTH_LONG).show();
-                }*/
                 Intent i = new Intent(context, ActivityVerProducto.class);
-                Gson gson = new Gson();
-                String jsonProducto = gson.toJson(producto);
-                i.putExtra("JSON_PRODUCTO",jsonProducto);
+                i.putExtra("producto_id",producto.getId());
                 context.startActivity(i);
             }
         });
 
         //obtiene los elementos de la vista
-        TextView nombre = (TextView) convertView.findViewById(R.id.nombreNodo);
-        TextView descripcion = (TextView) convertView.findViewById(R.id.descripcionNodo);
-        TextView precio = (TextView) convertView.findViewById(R.id.precio);
-        ImageView imagen = (ImageView) convertView.findViewById(R.id.imagen);
-        ImageButton sumar = (ImageButton) convertView.findViewById(R.id.botonSumar);
-        ImageButton restar = (ImageButton) convertView.findViewById(R.id.botonRestar);
-        TextView cantidad = (TextView) convertView.findViewById(R.id.cantidadProducto);
+        TextView nombre = convertView.findViewById(R.id.nombreNodo);
+        TextView descripcion = convertView.findViewById(R.id.descripcionNodo);
+        TextView precio = convertView.findViewById(R.id.precio);
+        ImageView imagen = convertView.findViewById(R.id.imagen);
+        ImageButton sumar = convertView.findViewById(R.id.botonSumar);
+        ImageButton restar = convertView.findViewById(R.id.botonRestar);
+        TextView cantidad = convertView.findViewById(R.id.cantidadProducto);
 
         if(signed_off) {
             sumar.setVisibility(View.GONE);
@@ -140,6 +129,7 @@ import java.util.HashMap;
         }
 
         //obtiene la imagen de producto guardada en base64
+
         if (producto.getImages().length > 0) {
             for (Image img : producto.getImages()) {
                 String base64Str = img.getValue();
@@ -156,7 +146,7 @@ import java.util.HashMap;
         //setea la cantidad seleccionada del producto
         boolean hayCantidad = false;
         for (CartProduct p : carrito) {
-            if (p.getProduct().equals(producto)) {
+            if (p.getProduct().getId().equals(producto.getId())) {
                 cantidad.setText(String.valueOf(p.getQuantity()));
                 hayCantidad = true;
             }
@@ -242,7 +232,7 @@ import java.util.HashMap;
          CartProduct productoADevolver= new CartProduct();
          boolean estaEnCarrito=false;
          for(CartProduct cp:carrito){
-             if(cp.getProduct().equals(p)){
+             if(cp.getProduct().getId()==p.getId()){
                  productoADevolver=cp;
                  cp.setQuantity(cp.getQuantity()+1);
                  estaEnCarrito=true;
@@ -267,7 +257,7 @@ import java.util.HashMap;
 
      public CartProduct retirarProducto(Product p){
          for(CartProduct c:carrito){
-             if(c.getProduct()==p){
+             if(c.getProduct().getId()==p.getId()){
                  CartProduct retorno = c;
                  c.restar();
                  if(c.getQuantity()==0){

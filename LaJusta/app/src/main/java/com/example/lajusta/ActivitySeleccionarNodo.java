@@ -1,5 +1,6 @@
 package com.example.lajusta;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,20 +9,21 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.lajusta.Interface.APICall;
 import com.example.lajusta.model.APIManejo;
 import com.example.lajusta.model.AvailableNode;
+import com.example.lajusta.model.Cart;
 import com.example.lajusta.model.CartProduct;
 import com.example.lajusta.model.General;
 import com.example.lajusta.model.Nodo;
+import com.example.lajusta.model.Token;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -32,11 +34,8 @@ import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.ListIterator;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,19 +57,31 @@ public class ActivitySeleccionarNodo extends AppCompatActivity {
         map.setTileSource(TileSourceFactory.MAPNIK);
         ListView listado = findViewById(R.id.listadoNodo);
         botonSeleccionarNodo = findViewById(R.id.botonConfirmarNodo);
+        ImageButton ib = findViewById(R.id.botonAtrasNodo);
+        ib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("general",null);
         Type type = new TypeToken<General>() {}.getType();
         General general = gson.fromJson(json,type);
+        //Aca se arma el carrito para guardarlo en la base de datos
+        json = sharedPreferences.getString("carrito",null);
+        Type typeProdsCarrito = new TypeToken<Cart>() {}.getType();
+        Cart cart = gson.fromJson(json,typeProdsCarrito);
+        json = sharedPreferences.getString("usuarioToken","");
+        Token usuarioLogin= gson.fromJson(json,Token.class);
 
         //Pasa los nodos disponibles de Array a ArrayList para poder manejar mejor el Adapter
         ArrayList<AvailableNode> nodos = new ArrayList<>();
         for(int i=0;i<general.getActiveNodes().length;i++){
             nodos.add(general.getActiveNodes()[i]);
         }
-
         CustomAdapterListadoNodos adapter = new CustomAdapterListadoNodos(nodos,nodoSeleccionado,this,R.layout.nodos, activity);
         listado.setAdapter(adapter);
 
@@ -78,12 +89,46 @@ public class ActivitySeleccionarNodo extends AppCompatActivity {
             if(nodoSeleccionado == null) {
                 Toast.makeText(ActivitySeleccionarNodo.this,"Debe seleccionar un nodo de la lista",Toast.LENGTH_SHORT).show();
             } else {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                String jsonNodoSeleccionado = gson.toJson(nodoSeleccionado);
-                editor.putString("NODO_SELECCIONADO", jsonNodoSeleccionado);
-                editor.apply();
-                Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityTicket.class);
-                startActivity(i);
+                ib.setVisibility(View.GONE);
+                ProgressBar pb = findViewById(R.id.progressBar);
+                botonSeleccionarNodo.setVisibility(View.GONE);
+                pb.setVisibility(View.VISIBLE);
+                cart.setNodeDate(nodoSeleccionado);
+                APIManejo apiManejo = new APIManejo();
+                APICall service = apiManejo.crearService();
+                service.saveCart(cart, "Bearer " + usuarioLogin.getValue()).enqueue(new Callback<Cart>() {
+                    @Override
+                    public void onResponse(Call<Cart> call, Response<Cart> response) {
+                        if(response.code()==200){
+                            String json = gson.toJson(cart);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("carrito",json);
+                            ArrayList<CartProduct> reiniciarProductos = new ArrayList<>();
+                            json = gson.toJson(reiniciarProductos);
+                            editor.putString("compras",json);
+                            editor.commit();
+                            Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityTicket.class);
+                            startActivity(i);
+                        }
+                        else{
+                            if(response.code()==409){
+                                Intent i = new Intent(ActivitySeleccionarNodo.this,ActivityFaltaStock.class);
+                                i.putExtra("errorBody",response.errorBody().toString());
+                                startActivity(i);
+                            }
+                            else{
+                                Toast.makeText(ActivitySeleccionarNodo.this,"No se pudo realizar su compra",Toast.LENGTH_LONG).show();
+                                Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityMain.class);
+                                startActivity(i);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Cart> call, Throwable t) {
+                        Toast.makeText(ActivitySeleccionarNodo.this,"Error en el servidor",Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
