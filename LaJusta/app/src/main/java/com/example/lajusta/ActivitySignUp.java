@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.lajusta.Interface.APICall;
 import com.example.lajusta.model.APIManejo;
 import com.example.lajusta.model.User;
+import com.example.lajusta.model.UserSinId;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -94,7 +96,7 @@ public class ActivitySignUp extends AppCompatActivity {
         APIManejo apiManejo = new APIManejo();
         APICall service = apiManejo.crearService();
 
-        User registrarUser = new User();
+        UserSinId registrarUser = new UserSinId();
         registrarUser.setEmail(mail);
         registrarUser.setEncryptedPassword(contra);
         registrarUser.setFirstName(nombre);

@@ -11,6 +11,8 @@ import com.example.lajusta.model.RecoveryPassword;
 import com.example.lajusta.model.ConfirmRecoveryPassword;
 import com.example.lajusta.model.Token;
 import com.example.lajusta.model.User;
+import com.example.lajusta.model.UserSinId;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -38,7 +40,7 @@ public interface APICall {
     Call<Token> generateToken(@Body LoginUser body);
 
     @POST("/api/user/signup")
-    Call<User> signup(@Body User body);
+    Call<User> signup(@Body UserSinId body);
 
     @GET("/api/user/{id}")
     Call<User> getUser(@Path("id") int id, @Header("Authorization") String auth);

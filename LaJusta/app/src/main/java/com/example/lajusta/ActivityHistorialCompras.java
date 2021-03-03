@@ -63,6 +63,9 @@ public class ActivityHistorialCompras  extends AppCompatActivity {
             public void onResponse(Call<CartsHistorial> call, Response<CartsHistorial> response) {
                 if(response.code()==200) {
                     ArrayList<CartComplete> carts = (ArrayList<CartComplete>) response.body().getPage();
+                    if(carts.isEmpty()){
+                        nombreUsuario.setText("Aún no ha realizado compras");
+                    }
                     CustomAdapterHistorialCarritos adapter = new CustomAdapterHistorialCarritos(carts, getApplicationContext(), R.layout.carrito_en_historial);
                     listado.setAdapter(adapter);
                 }
