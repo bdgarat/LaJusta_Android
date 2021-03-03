@@ -9,7 +9,18 @@ public class Product implements Serializable{
     public String description;
     public ArrayList<Category> categories;
     public double price;
+    public int stock;
     public Image images[];
+
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
 
     public Long getId() {
         return id;

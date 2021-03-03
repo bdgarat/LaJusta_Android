@@ -28,26 +28,31 @@ public class ActivityLogin extends AppCompatActivity {
             setContentView(R.layout.activity_login);
 
             Button registrar=findViewById(R.id.registrar);
+            Button recuperarContra = findViewById(R.id.buttonCambiarContraseña);
             email=findViewById(R.id.username);
             password=findViewById(R.id.password);
             email.setText("");
             password.setText("");
             Button btnlogin=findViewById(R.id.btnlogin);
+
+
             btnlogin.setOnClickListener(v -> logIn());
 
             registrar.setOnClickListener(v -> startActivity(new Intent(ActivityLogin.this, ActivitySignUp.class)));
+
+            recuperarContra.setOnClickListener(v -> startActivity(new Intent(ActivityLogin.this, ActivityCambiarContraseña.class)));
     }
 
     private void logIn() {
         String name=email.getText().toString().trim();
         String contra=password.getText().toString();
         if (TextUtils.isEmpty(name)){
-            email.setError("Please Enter Email");
+            email.setError("Por favor ingrese un email");
             email.requestFocus();
             return;
         }
         if (TextUtils.isEmpty(contra)){
-            password.setError("Please Enter Password");
+            password.setError("Por favor ingrese una contraseña");
             password.requestFocus();
             return;
         }

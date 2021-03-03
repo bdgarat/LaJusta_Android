@@ -157,10 +157,16 @@ import java.util.HashMap;
 
         //onClick para cuando apreta en agregar producto
         sumar.setOnClickListener(v -> {
-            CartProduct c = this.agregarProducto(producto);
-            cantidad.setText(String.valueOf(c.getQuantity()));
-            saldoGastado.setText("Total Parcial $" + String.valueOf(this.precioCarrito()));
-            Toast.makeText(context.getApplicationContext(), producto.getTitle() + " agregado exitosamente", Toast.LENGTH_SHORT).show();
+            if(producto.getStock() > 0) {
+                CartProduct c = this.agregarProducto(producto);
+                cantidad.setText(String.valueOf(c.getQuantity()));
+                saldoGastado.setText("Total Parcial $" + String.valueOf(this.precioCarrito()));
+                Toast.makeText(context.getApplicationContext(), producto.getTitle() + " agregado exitosamente", Toast.LENGTH_SHORT).show();
+                producto.setStock(producto.getStock() - 1);
+            } else {
+                Toast.makeText(context.getApplicationContext(), "No hay mas stock del producto " + producto.getTitle(), Toast.LENGTH_SHORT).show();
+            }
+
         });
 
         //onClick para cuando apreta en eliminar producto
@@ -170,6 +176,7 @@ import java.util.HashMap;
                 Toast.makeText(context.getApplicationContext(), producto.getTitle() + " retirado exitosamente", Toast.LENGTH_SHORT).show();
                 saldoGastado.setText("Total Parcial $" + String.valueOf(this.precioCarrito()));
                 cantidad.setText(String.valueOf(productoAEliminar.getQuantity()));
+                producto.setStock(producto.getStock() + 1);
             }
         });
 

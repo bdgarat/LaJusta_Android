@@ -86,6 +86,15 @@ public class ActivitySeleccionarNodo extends AppCompatActivity {
         listado.setAdapter(adapter);
 
         botonSeleccionarNodo.setOnClickListener(v -> {
+            boolean SignedIn = sharedPreferences.getBoolean("SignedIn", false);
+            VerificarToken verificarToken = new VerificarToken();
+            if(SignedIn) {
+                if(verificarToken.verificarToken(sharedPreferences)) {
+                    //Va al login informando que fallo el token
+                    Intent intent = new Intent(ActivitySeleccionarNodo.this, ActivityLogin.class);
+                    startActivity(intent);
+                }
+            }
             if(nodoSeleccionado == null) {
                 Toast.makeText(ActivitySeleccionarNodo.this,"Debe seleccionar un nodo de la lista",Toast.LENGTH_SHORT).show();
             } else {

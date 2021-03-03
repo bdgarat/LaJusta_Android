@@ -65,6 +65,9 @@
 
         <activity android:name=".ActivityFaltaStock"
             android:theme="@style/Theme.LaJusta.NoActionBar"/>
+
+        <activity android:name=".ActivityCambiarContraseña"
+            android:theme="@style/Theme.LaJusta.NoActionBar"/>
     </application>
 
 </manifest>
