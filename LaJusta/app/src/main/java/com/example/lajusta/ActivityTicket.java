@@ -40,7 +40,7 @@ public class ActivityTicket extends AppCompatActivity {
         Cart cart = gson.fromJson(json,typeProdsCarrito);
         AvailableNode nodoSeleccionado = cart.getNodeDate();
         TextView lugarRetiro = findViewById(R.id.lugarRetiro);
-        lugarRetiro.setText("Retire su compra en el nodo: " + nodoSeleccionado.getNode().getName() +" , que se ubica en la direccion: " + nodoSeleccionado.getNode().getAddress().getStreet() + " " + nodoSeleccionado.getNode().getAddress().getNumber() + ", Entre " + nodoSeleccionado.getNode().getAddress().getBetweenStreets()+", Desde "+nodoSeleccionado.dateTimeFrom+"hs hasta "+nodoSeleccionado.dateTimeTo+"hs");
+        lugarRetiro.setText("Retire su compra en el nodo: " + nodoSeleccionado.getNode().getName() +" , que se ubica en la direccion: " + nodoSeleccionado.getNode().getAddress().getStreet() + " " + nodoSeleccionado.getNode().getAddress().getNumber() + ", Entre " + nodoSeleccionado.getNode().getAddress().getBetweenStreets()+", el dia: "+nodoSeleccionado.getDay()+", Desde "+nodoSeleccionado.dateTimeFrom+"hs hasta "+nodoSeleccionado.dateTimeTo+"hs");
         total.setText("$"+String.valueOf(cart.calcularPrecio()));
 
         volver.setOnClickListener(v -> {

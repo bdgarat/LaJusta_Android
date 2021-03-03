@@ -43,6 +43,11 @@ public class ActivityPerfil  extends AppCompatActivity {
         Button historialCarrito = findViewById(R.id.historialPedidos);
         ImageButton atras = findViewById(R.id.botonAtras);
 
+        boolean errorPipe = getIntent().getBooleanExtra("errorPipe",false);
+        if(errorPipe){
+
+        }
+
         SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("usuarioToken","");
@@ -73,37 +78,14 @@ public class ActivityPerfil  extends AppCompatActivity {
             startActivity(i);
             Toast.makeText(ActivityPerfil.this,"Ha cerrado su sesion correctamente",Toast.LENGTH_SHORT).show();
         });
+
         historialCarrito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                APIManejo apiManejo = new APIManejo();
-                APICall service = apiManejo.crearService();
-                service.getUser(usuarioToken.getUser().getId(),"Bearer " + usuarioToken.getValue()).enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        if(response.code()==200){
-                            Intent i = new Intent(ActivityPerfil.this,ActivityHistorialCompras.class);
-                            startActivity(i);
-                        }
-                        else{
-                            if(response.code()==401){
-                                Intent i = new Intent(ActivityPerfil.this, ActivityLogin.class);
-                                Toast.makeText(ActivityPerfil.this,"Sesion expirada, inicie nuevamente",Toast.LENGTH_LONG).show();
-                                startActivity(i);
-                            }
-                            else{
-                                Toast.makeText(ActivityPerfil.this,"Error del servidor, intente mas tarde",Toast.LENGTH_LONG).show();
-                            }
-
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-
-                    }
-                });
+                Intent i = new Intent(ActivityPerfil.this,ActivityHistorialCompras.class);
+                startActivity(i);
             }
         });
+
     }
 }

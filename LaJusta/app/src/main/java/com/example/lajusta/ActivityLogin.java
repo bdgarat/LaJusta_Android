@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.lajusta.Interface.APICall;
@@ -35,7 +37,11 @@ public class ActivityLogin extends AppCompatActivity {
             password.setText("");
             Button btnlogin=findViewById(R.id.btnlogin);
 
-
+            boolean sexionExp= getIntent().getBooleanExtra("sesionExpirada",false);
+            if(sexionExp){
+                TextView sesionExp = findViewById(R.id.sesionExp);
+                sesionExp.setVisibility(View.VISIBLE);
+            }
             btnlogin.setOnClickListener(v -> logIn());
 
             registrar.setOnClickListener(v -> startActivity(new Intent(ActivityLogin.this, ActivitySignUp.class)));

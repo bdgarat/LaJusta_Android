@@ -49,7 +49,7 @@ public class CustomAdapterHistorialCarritos extends BaseAdapter {
         TextView gasto = convertView.findViewById(R.id.precioCompra);
         gasto.setText(String.valueOf("Total Compra: $"+cart.getTotal()));
         TextView cantP = convertView.findViewById(R.id.cantidadArticulos);
-        cantP.setText(String.valueOf("Cantidad de Productos Distintos: "+cart.getCartProducts().length));
+        cantP.setText(String.valueOf("ID de compra: "+cart.getId()));
         TextView nodo = convertView.findViewById(R.id.nodoDondeRetiro);
         nodo.setText("Nodo retiro: "+cart.getNodeDate().getNode().getName());
         return convertView;

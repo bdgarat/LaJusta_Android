@@ -97,70 +97,73 @@ public class ActivitySeleccionarNodo extends AppCompatActivity {
                 cart.setNodeDate(nodoSeleccionado);
                 APIManejo apiManejo = new APIManejo();
                 APICall service = apiManejo.crearService();
-
-                //Este getUser juega de validador de token
-                service.getUser(usuarioLogin.getUser().getId(),"Bearer " +usuarioLogin.getValue()).enqueue(new Callback<User>() {
+                service.saveCart(cart, "Bearer " + usuarioLogin.getValue()).enqueue(new Callback<Cart>() {
                     @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        //En caso de que el token sea valido, realiza el saveCart correspondiente
+                    public void onResponse(Call<Cart> call, Response<Cart> response) {
                         if(response.code()==200){
-                            service.saveCart(cart, "Bearer " + usuarioLogin.getValue()).enqueue(new Callback<Cart>() {
-                                @Override
-                                public void onResponse(Call<Cart> call, Response<Cart> response) {
-                                    if(response.code()==200){
-                                        String json = gson.toJson(cart);
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        editor.putString("carrito",json);
-                                        ArrayList<CartProduct> reiniciarProductos = new ArrayList<>();
-                                        json = gson.toJson(reiniciarProductos);
-                                        editor.putString("compras",json);
-                                        editor.commit();
-                                        Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityTicket.class);
-                                        startActivity(i);
-                                    }
-                                    else{
-                                        //En caso de que el token expire en ese momento, lleva a login
-                                        if(response.code()==401){
-                                            Toast.makeText(ActivitySeleccionarNodo.this,"Sesion expirada, inicie nuevamente",Toast.LENGTH_LONG).show();
-                                            Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityLogin.class);
-                                            startActivity(i);
-                                        }
-                                        else {
-                                            //En caso de otro tipo de error, lleva al main y no hace la compra
-                                            Toast.makeText(ActivitySeleccionarNodo.this, "No se pudo realizar su compra, intente mas tarde", Toast.LENGTH_LONG).show();
-                                            Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityMain.class);
-                                            startActivity(i);
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<Cart> call, Throwable t) {
-                                    //Aca tambien avisa fallo y vuelve al menu
-                                    Toast.makeText(ActivitySeleccionarNodo.this,"No se pudo realizar su compra, intente mas tarde",Toast.LENGTH_LONG).show();
-                                    Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityMain.class);
-                                    startActivity(i);
-                                }
-                            });
+                            String json = gson.toJson(cart);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("carrito",json);
+                            ArrayList<CartProduct> reiniciarProductos = new ArrayList<>();
+                            json = gson.toJson(reiniciarProductos);
+                            editor.putString("compras",json);
+                            editor.commit();
+                            Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityTicket.class);
+                            startActivity(i);
                         }
                         else{
-                            //Token no valido lleva a login
+                            //En caso de que el token expire lleva a login
                             if(response.code()==401){
-                                Toast.makeText(ActivitySeleccionarNodo.this,"Sesion expirada, inicie nuevamente",Toast.LENGTH_LONG).show();
                                 Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityLogin.class);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putBoolean("SignedIn", false);
+                                editor.putString("nombreUsuario", "");
+                                editor.putString("apellidoUsuario", "");
+                                editor.putString("usuarioToken", "");
+                                String vaciarCarro = gson.toJson(new ArrayList<CartProduct>());
+                                editor.putString("compras",vaciarCarro);
+                                editor.apply();
+                                i.putExtra("sesionExpirada",true);
                                 startActivity(i);
+                            }
+                            else {
+                                if(response.code()==409){
+                                    Toast.makeText(ActivitySeleccionarNodo.this, "Problemas de stock, realice compra nuevamente", Toast.LENGTH_LONG).show();
+                                    Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityCompra.class);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    String vaciarCarro = gson.toJson(new ArrayList<CartProduct>());
+                                    editor.putString("compras",vaciarCarro);
+                                    editor.apply();
+                                    startActivity(i);
+
+                                }
+                                else{
+                                    //En caso de otro tipo de error, lleva al main y no hace la compra
+                                    Toast.makeText(ActivitySeleccionarNodo.this, "No se pudo realizar su compra, intente mas tarde", Toast.LENGTH_LONG).show();
+                                    Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityMain.class);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    String vaciarCarro = gson.toJson(new ArrayList<CartProduct>());
+                                    editor.putString("compras",vaciarCarro);
+                                    editor.apply();
+                                    startActivity(i);
+                                }
                             }
                         }
                     }
-
                     @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-                        //Error en getUser, vuelve a main
-                        Toast.makeText(ActivitySeleccionarNodo.this,"No se pudo realizar su compra, intente mas tarde",Toast.LENGTH_LONG).show();
-                        Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityMain.class);
+                    public void onFailure(Call<Cart> call, Throwable t) {
+                        //Aca tambien avisa fallo y vuelve al menu
+                        Toast.makeText(ActivitySeleccionarNodo.this,"Error del servidor, pruebe iniciando sesion nuevamente",Toast.LENGTH_LONG).show();
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        String vaciarCarro = gson.toJson(new ArrayList<CartProduct>());
+                        editor.putString("compras",vaciarCarro);
+                        editor.apply();
+                        Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityPerfil.class);
+                        i.putExtra("errorPipe",true);
                         startActivity(i);
                     }
                 });
+
             }
         });
 

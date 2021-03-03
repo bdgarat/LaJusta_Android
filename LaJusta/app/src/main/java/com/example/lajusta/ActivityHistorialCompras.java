@@ -1,18 +1,21 @@
 package com.example.lajusta;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.lajusta.Interface.APICall;
 import com.example.lajusta.model.APIManejo;
 import com.example.lajusta.model.CartComplete;
+import com.example.lajusta.model.CartProduct;
 import com.example.lajusta.model.CartsHistorial;
 import com.example.lajusta.model.Token;
 import com.google.gson.Gson;
@@ -26,8 +29,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ActivityHistorialCompras  extends AppCompatActivity {
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +47,10 @@ public class ActivityHistorialCompras  extends AppCompatActivity {
         String json = sharedPreferences.getString("usuarioToken","");
         Token usuarioLogin= gson.fromJson(json,Token.class);
         if(usuarioLogin.getUser().getFirstName()!=null){
-            nombreUsuario.setText("Compras realizadas por "+usuarioLogin.getUser().getFirstName()+" "+usuarioLogin.getUser().getLastName());
+            nombreUsuario.setText("Compras realizadas por "+usuarioLogin.getUser().getFirstName());
         }
         else{
-            nombreUsuario.setText("Historial de compras");
+            nombreUsuario.setText("Compras realizadas");
         }
         APIManejo apiManejo = new APIManejo();
         APICall service = apiManejo.crearService();
@@ -60,19 +61,36 @@ public class ActivityHistorialCompras  extends AppCompatActivity {
         service.getCarts(map,"Bearer " + usuarioLogin.getValue()).enqueue(new Callback<CartsHistorial>() {
             @Override
             public void onResponse(Call<CartsHistorial> call, Response<CartsHistorial> response) {
-                if(response.isSuccessful()) {
+                if(response.code()==200) {
                     ArrayList<CartComplete> carts = (ArrayList<CartComplete>) response.body().getPage();
                     CustomAdapterHistorialCarritos adapter = new CustomAdapterHistorialCarritos(carts, getApplicationContext(), R.layout.carrito_en_historial);
                     listado.setAdapter(adapter);
                 }
                 else{
-
+                    if(response.code()==401){
+                        Intent i = new Intent(ActivityHistorialCompras.this, ActivityLogin.class);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean("SignedIn", false);
+                        editor.putString("nombreUsuario", "");
+                        editor.putString("apellidoUsuario", "");
+                        editor.putString("usuarioToken", "");
+                        String vaciarCarro = gson.toJson(new ArrayList<CartProduct>());
+                        editor.putString("compras",vaciarCarro);
+                        editor.apply();
+                        i.putExtra("sesionExpirada",true);
+                        startActivity(i);
+                    }
+                    else{
+                        Toast.makeText(ActivityHistorialCompras.this,"Error del servidor, intente mas tarde",Toast.LENGTH_LONG).show();
+                        onBackPressed();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<CartsHistorial> call, Throwable t) {
-
+                Toast.makeText(ActivityHistorialCompras.this,"Error del servidor, intente mas tarde",Toast.LENGTH_LONG).show();
+                onBackPressed();
             }
         });
 

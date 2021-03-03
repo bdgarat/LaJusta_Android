@@ -19,6 +19,18 @@
 
         </ImageButton>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:id="@+id/errorPipe"
+            android:text="Puede haber ocurrido un error en su sesión, por favor, cierre e inicie nuevamente para poder realizar una compra"
+            android:textColor="#FF0000"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">

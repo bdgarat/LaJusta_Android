@@ -124,7 +124,8 @@ public class ActivityCompra extends AppCompatActivity {
                     public void onFailure(Call<ArrayList<Product>> call, Throwable t) {
                         Toast.makeText(ActivityCompra.this,"Error del servidor",Toast.LENGTH_SHORT).show();
                         System.out.println("No se obtuvieron los productos");
-                    }}); }
+                    }});
+            }
             @Override
             public void onFailure(Call<ArrayList<Category>> call, Throwable t) {
                 Toast.makeText(ActivityCompra.this,"Error del servidor",Toast.LENGTH_SHORT).show();
