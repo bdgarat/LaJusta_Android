@@ -1,5 +1,8 @@
 package com.example.lajusta.model;
 
+import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
+
 import java.util.ArrayList;
 
 public class Receta {
@@ -7,16 +10,17 @@ public class Receta {
     public String tiempoPreparacion;
     public ArrayList<String> ingredientes;
     public String preparacion;
-    public Image imagen;
+    public int imagen;
 
     public Receta(){
     }
 
-    public Receta(String nombre, String tiempoPreparacion, ArrayList<String> ingredientes,String preparacion) {
+    public Receta(String nombre, String tiempoPreparacion, ArrayList<String> ingredientes, String preparacion, int imagen) {
         this.nombre = nombre;
         this.tiempoPreparacion = tiempoPreparacion;
         this.ingredientes = ingredientes;
         this.preparacion = preparacion;
+        this.imagen=imagen;
     }
 
     public String getNombre() {
@@ -49,5 +53,13 @@ public class Receta {
 
     public void setPreparacion(String preparacion) {
         this.preparacion = preparacion;
+    }
+
+    public int getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(int imagen) {
+        this.imagen = imagen;
     }
 }

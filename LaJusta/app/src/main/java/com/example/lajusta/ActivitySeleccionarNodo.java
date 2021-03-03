@@ -126,7 +126,9 @@ public class ActivitySeleccionarNodo extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<Cart> call, Throwable t) {
-                        Toast.makeText(ActivitySeleccionarNodo.this,"Error en el servidor",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivitySeleccionarNodo.this,"No se pudo realizar su compra",Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityMain.class);
+                        startActivity(i);
                     }
                 });
             }

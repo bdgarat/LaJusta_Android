@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,29 +43,28 @@ public class CustomAdapterRecetas extends ArrayAdapter<Receta> implements Filter
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        String nombre = getItem(position).getNombre();
-        String tiempoPreparacion = getItem(position).getTiempoPreparacion();
-        String preparacion = getItem(position).getPreparacion();
-        ArrayList<String> ingredientes = getItem(position).getIngredientes();
+        Receta receta = getItem(position);
 
-        Receta receta = new Receta(nombre,tiempoPreparacion,ingredientes,preparacion);
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 
-        TextView nombreT = (TextView) convertView.findViewById(R.id.nombreReceta);
-        TextView tiempoT = (TextView) convertView.findViewById(R.id.tiempoPreparacion);
-        TextView preparacionT = (TextView) convertView.findViewById(R.id.preparacionReceta);
-        TextView ingredientesT = (TextView) convertView.findViewById(R.id.ingredientes);
-
-        nombreT.setText(nombre);
-        tiempoT.setText(tiempoPreparacion);
-        preparacionT.setText(preparacion);
+        TextView nombreT = convertView.findViewById(R.id.nombreReceta);
+        TextView tiempoT = convertView.findViewById(R.id.tiempoPreparacion);
+        TextView preparacionT = convertView.findViewById(R.id.preparacionReceta);
+        TextView ingredientesT = convertView.findViewById(R.id.ingredientes);
+        ImageView imagen = convertView.findViewById(R.id.imagen);
+        imagen.setImageResource(receta.getImagen());
+        nombreT.setText(receta.getNombre());
+        tiempoT.setText(receta.getTiempoPreparacion());
+        preparacionT.setText(receta.getPreparacion());
         String listadoIngred="";
-        for(String ingred: ingredientes){
+        for(String ingred: receta.getIngredientes()){
             listadoIngred+=ingred+",";
         }
+        listadoIngred=listadoIngred.substring(0,listadoIngred.length()-1);
         ingredientesT.setText(listadoIngred);
+
 
         return convertView;
 
