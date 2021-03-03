@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent">
-
-    <ImageButton
-        android:id="@+id/botonAtras"
-        android:layout_width="100sp"
-        android:layout_height="60sp"
-        android:src="@drawable/abc_vector_test"
-        tools:ignore="MissingConstraints">
-
-    </ImageButton>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,41 +13,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textIngresarDatos"
+                android:id="@+id/textCambiarContrasena"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="30sp"
-                android:text="Ingresar Datos"
+                android:text="Cambiar Contraseña"
                 android:textColor="#303F9F"
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/editName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="40sp"
-                android:ems="10"
-                android:hint="Nombre"
-                android:inputType="textPersonName" />
-
-            <EditText
-                android:id="@+id/editLastName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="40sp"
-                android:ems="10"
-                android:hint="Apellido"
-                android:inputType="textPersonName" />
-
-            <EditText
-                android:id="@+id/editEmail"
+                android:id="@+id/editEmailCambiarContraseña"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -66,45 +37,34 @@
                 android:inputType="textEmailAddress" />
 
             <EditText
-                android:id="@+id/editPhone"
+                android:id="@+id/editOldPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="40sp"
                 android:ems="10"
-                android:hint="Teléfono"
-                android:inputType="phone" />
-
-            <EditText
-                android:id="@+id/editPass"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="40sp"
-                android:ems="10"
-                android:hint="Contraseña"
+                android:hint="Contraseña Antigua (?)"
                 android:inputType="textPassword" />
 
             <EditText
-                android:id="@+id/editConfirmPassword"
+                android:id="@+id/editNewPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="40sp"
                 android:ems="10"
-                android:hint="Confirmar Contraseña"
+                android:hint="Contraseña Nueva"
                 android:inputType="textPassword" />
 
             <Button
-                android:id="@+id/buttonSignOff"
+                android:id="@+id/buttonRecover"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="40sp"
-                android:text="Registrar"
+                android:text="Cambiar"
                 android:textAllCaps="false" />
 
         </LinearLayout>
     </ScrollView>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

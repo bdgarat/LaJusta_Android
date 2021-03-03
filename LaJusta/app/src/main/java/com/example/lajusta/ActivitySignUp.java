@@ -31,7 +31,7 @@ public class ActivitySignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        TextView text = findViewById(R.id.textProducto);
+        TextView text = findViewById(R.id.textRecuperarContrasena);
         name = findViewById(R.id.editName);
         lastname = findViewById(R.id.editLastName);
         phone = findViewById(R.id.editPhone);

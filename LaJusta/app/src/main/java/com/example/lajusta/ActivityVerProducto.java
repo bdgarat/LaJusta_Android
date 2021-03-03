@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +28,7 @@ public class ActivityVerProducto  extends AppCompatActivity {
     TextView textProducto;
     TextView textDescripcion;
     TextView textPrecio;
+    TextView textStock;
     ImageView imageProducto;
     TextView textCategorias;
 
@@ -37,19 +37,17 @@ public class ActivityVerProducto  extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_producto);
 
-        textProducto = findViewById(R.id.textProducto);
+        textProducto = findViewById(R.id.textRecuperarContrasena);
         textDescripcion = findViewById(R.id.textDescripcionProducto);
         textPrecio = findViewById(R.id.textPrecioProducto);
+        textStock = findViewById(R.id.textStockProducto);
         imageProducto = findViewById(R.id.imageProducto);
         textCategorias = findViewById(R.id.textCategoriasProducto);
 
         APIManejo apiManejo = new APIManejo();
         APICall service = apiManejo.crearService();
-        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("usuarioToken","");
-        Token usuarioLogin= gson.fromJson(json,Token.class);
-        service.getProduct(getIntent().getLongExtra("producto_id",-1),usuarioLogin.getValue()).enqueue(new Callback<Product>() {
+
+        service.getProduct(getIntent().getLongExtra("producto_id",-1)).enqueue(new Callback<Product>() {
             @Override
             public void onResponse(Call<Product> call, Response<Product> response) {
                 if(response.code()==200){
@@ -64,6 +62,8 @@ public class ActivityVerProducto  extends AppCompatActivity {
                     textDescripcion.setVisibility(View.VISIBLE);
                     textPrecio.setText("Precio: $" + String.valueOf(producto.getPrice()));
                     textPrecio.setVisibility(View.VISIBLE);
+                    textStock.setText("Stock: " + String.valueOf(producto.getStock()) + " unidades");
+                    textStock.setVisibility(View.VISIBLE);
                     if (producto.getImages().length > 0) {
                         for (Image img : producto.getImages()) {
                             String base64Str = img.getValue();

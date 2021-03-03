@@ -6,6 +6,8 @@ import com.example.lajusta.model.General;
 import com.example.lajusta.model.LoginUser;
 import com.example.lajusta.model.Nodo;
 import com.example.lajusta.model.Product;
+import com.example.lajusta.model.RecoveryPassword;
+import com.example.lajusta.model.ConfirmRecoveryPassword;
 import com.example.lajusta.model.Token;
 import com.example.lajusta.model.User;
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public interface APICall {
     Call<ArrayList<Product>> getProducts();
 
     @GET("/api/product/{id}")
-    Call<Product> getProduct(@Path("id") long id,@Header("Authorization") String auth);
+    Call<Product> getProduct(@Path("id") long id);
 
     @GET("/api/category")
     Call<ArrayList<Category>> getCategories();
@@ -54,4 +56,10 @@ public interface APICall {
 
     @GET("/api/general/active")
     Call<General> getActive();
+
+    @POST("/api/email/recovery")
+    Call<RecoveryPassword> recoveryPassword(@Body RecoveryPassword email);
+
+    @POST("/api/email/recovery/confirm")
+    Call<ConfirmRecoveryPassword> confirmRecoveryPassword(@Body ConfirmRecoveryPassword cambiarContraseña);
 }

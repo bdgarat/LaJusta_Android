@@ -70,11 +70,29 @@ public class ActivityMain extends AppCompatActivity {
             }
         });
         compra.setOnClickListener(v -> {
+            boolean SignedIn = sharedPreferences.getBoolean("SignedIn", false);
+            VerificarToken verificarToken = new VerificarToken();
+            if(SignedIn) {
+                if(verificarToken.verificarToken(sharedPreferences)) {
+                    //Va al login informando que fallo el token
+                    Intent intent = new Intent(ActivityMain.this, ActivityLogin.class);
+                    startActivity(intent);
+                }
+            }
             Intent i = new Intent(ActivityMain.this, ActivityCompra.class);
             startActivity(i);
         });
 
         recetas.setOnClickListener(v -> {
+            boolean SignedIn = sharedPreferences.getBoolean("SignedIn", false);
+            VerificarToken verificarToken = new VerificarToken();
+            if(SignedIn) {
+                if(verificarToken.verificarToken(sharedPreferences)) {
+                    //Va al login informando que fallo el token
+                    Intent intent = new Intent(ActivityMain.this, ActivityLogin.class);
+                    startActivity(intent);
+                }
+            }
             Intent i = new Intent(ActivityMain.this, ActivityReceta.class);
             startActivity(i);
         });
@@ -87,6 +105,15 @@ public class ActivityMain extends AppCompatActivity {
         });
 
         verPerfilUsuario.setOnClickListener(v -> {
+            boolean SignedIn = sharedPreferences.getBoolean("SignedIn", false);
+            VerificarToken verificarToken = new VerificarToken();
+            if(SignedIn) {
+                if(verificarToken.verificarToken(sharedPreferences)) {
+                    //Va al login informando que fallo el token
+                    Intent intent = new Intent(ActivityMain.this, ActivityLogin.class);
+                    startActivity(intent);
+                }
+            }
             Intent i = new Intent(ActivityMain.this, ActivityPerfil.class);
             startActivity(i);
         });
