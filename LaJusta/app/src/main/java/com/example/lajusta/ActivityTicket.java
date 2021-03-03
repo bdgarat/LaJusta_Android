@@ -1,8 +1,10 @@
 package com.example.lajusta;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,9 +16,11 @@ import com.example.lajusta.model.Cart;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
+import java.time.ZonedDateTime;
 
 public class ActivityTicket extends AppCompatActivity {
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +44,9 @@ public class ActivityTicket extends AppCompatActivity {
         Cart cart = gson.fromJson(json,typeProdsCarrito);
         AvailableNode nodoSeleccionado = cart.getNodeDate();
         TextView lugarRetiro = findViewById(R.id.lugarRetiro);
-        lugarRetiro.setText("Retire su compra en el nodo: " + nodoSeleccionado.getNode().getName() +" , que se ubica en la direccion: " + nodoSeleccionado.getNode().getAddress().getStreet() + " " + nodoSeleccionado.getNode().getAddress().getNumber() + ", Entre " + nodoSeleccionado.getNode().getAddress().getBetweenStreets()+", el dia: "+nodoSeleccionado.getDay()+", Desde "+nodoSeleccionado.dateTimeFrom+"hs hasta "+nodoSeleccionado.dateTimeTo+"hs");
+        ZonedDateTime zdtDia = ZonedDateTime.parse(nodoSeleccionado.getDay());
+        String diaFormateado = (zdtDia.getDayOfMonth() + " de " + zdtDia.getMonth() + " del " + zdtDia.getYear());
+        lugarRetiro.setText("Retire su compra en el nodo: " + nodoSeleccionado.getNode().getName() +" , que se ubica en la direccion: " + nodoSeleccionado.getNode().getAddress().getStreet() + " " + nodoSeleccionado.getNode().getAddress().getNumber() + ", Entre " + nodoSeleccionado.getNode().getAddress().getBetweenStreets()+", el dia: "+ diaFormateado +", Desde "+nodoSeleccionado.dateTimeFrom+"hs hasta "+nodoSeleccionado.dateTimeTo+"hs");
         total.setText("$"+String.valueOf(cart.calcularPrecio()));
 
         volver.setOnClickListener(v -> {
