@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.lajusta.Interface.APICall;
 import com.example.lajusta.model.APIManejo;
 import com.example.lajusta.model.General;
@@ -52,47 +54,38 @@ public class ActivityMain extends AppCompatActivity {
         APIManejo apiManejo = new APIManejo();
         APICall service = apiManejo.crearService();
 
-        service.getActive().enqueue(new Callback<General>() {
-            @Override
-            public void onResponse(Call<General> call, Response<General> response) {
-                General general = response.body();
-                SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                Gson gson = new Gson();
-                String json = gson.toJson(general);
-                editor.putString("general", json);
-                editor.apply();
-            }
+        boolean signedIn = sharedPreferences.getBoolean("SignedIn",false);
 
-            @Override
-            public void onFailure(Call<General> call, Throwable t) {
-                System.out.println("Error del servidor getActiveGeneral");
-            }
-        });
-        compra.setOnClickListener(v -> {
-            boolean SignedIn = sharedPreferences.getBoolean("SignedIn", false);
-            VerificarToken verificarToken = new VerificarToken();
-            if(SignedIn) {
-                if(verificarToken.verificarToken(sharedPreferences)) {
-                    //Va al login informando que fallo el token
-                    Intent intent = new Intent(ActivityMain.this, ActivityLogin.class);
-                    startActivity(intent);
+        if(signedIn){
+            service.getActive().enqueue(new Callback<General>() {
+                @Override
+                public void onResponse(Call<General> call, Response<General> response) {
+                    if(response.code()==200){
+                        General general = response.body();
+                        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        Gson gson = new Gson();
+                        String json = gson.toJson(general);
+                        editor.putString("general", json);
+                        editor.apply();
+                    }
+                    else{
+                        Toast.makeText(ActivityMain.this,"Error en el servidor",Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
+
+                @Override
+                public void onFailure(Call<General> call, Throwable t) {
+                    System.out.println("Error del servidor");
+                }
+            });
+        }
+        compra.setOnClickListener(v -> {
             Intent i = new Intent(ActivityMain.this, ActivityCompra.class);
             startActivity(i);
         });
 
         recetas.setOnClickListener(v -> {
-            boolean SignedIn = sharedPreferences.getBoolean("SignedIn", false);
-            VerificarToken verificarToken = new VerificarToken();
-            if(SignedIn) {
-                if(verificarToken.verificarToken(sharedPreferences)) {
-                    //Va al login informando que fallo el token
-                    Intent intent = new Intent(ActivityMain.this, ActivityLogin.class);
-                    startActivity(intent);
-                }
-            }
             Intent i = new Intent(ActivityMain.this, ActivityReceta.class);
             startActivity(i);
         });
@@ -105,17 +98,10 @@ public class ActivityMain extends AppCompatActivity {
         });
 
         verPerfilUsuario.setOnClickListener(v -> {
-            boolean SignedIn = sharedPreferences.getBoolean("SignedIn", false);
-            VerificarToken verificarToken = new VerificarToken();
-            if(SignedIn) {
-                if(verificarToken.verificarToken(sharedPreferences)) {
-                    //Va al login informando que fallo el token
-                    Intent intent = new Intent(ActivityMain.this, ActivityLogin.class);
-                    startActivity(intent);
-                }
+            if(signedIn) {
+                Intent i = new Intent(ActivityMain.this, ActivityPerfil.class);
+                startActivity(i);
             }
-            Intent i = new Intent(ActivityMain.this, ActivityPerfil.class);
-            startActivity(i);
         });
     }
 

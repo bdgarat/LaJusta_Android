@@ -78,20 +78,9 @@ public class ActivityMostrarCarrito extends AppCompatActivity {
         editor.commit();
         TextView textoTotal = findViewById(R.id.totalCarrito);
         textoTotal.setText("Total $"+String.valueOf(cart.calcularPrecio()));
-        SharedPreferences finalSharedPreferences = sharedPreferences;
         botonC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean SignedIn = finalSharedPreferences.getBoolean("SignedIn", false);
-                VerificarToken verificarToken = new VerificarToken();
-                if(SignedIn) {
-                    if(verificarToken.verificarToken(finalSharedPreferences)) {
-                        //Va al login informando que fallo el token
-                        Intent intent = new Intent(ActivityMostrarCarrito.this, ActivityLogin.class);
-                        startActivity(intent);
-                    }
-                }
-
                 Intent i = new Intent(ActivityMostrarCarrito.this, ActivitySeleccionarNodo.class);
                 startActivity(i);
             }

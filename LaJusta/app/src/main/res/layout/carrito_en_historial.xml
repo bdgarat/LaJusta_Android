@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content"
+    android:background="@drawable/gradient_productos">
+
+    <ImageView
+        android:id="@+id/imagen"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha de compra"
+            android:id="@+id/fechaCompra"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:layout_marginStart="5dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/precioCompra"
+            android:text="Gasto $9998"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:layout_marginStart="5dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cantidadArticulos"
+            android:text="Cantidad de productos 5"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:layout_marginStart="5dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/nodoDondeRetiro"
+            android:text="Nodo de retiro"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:layout_marginStart="5dp"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

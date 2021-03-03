@@ -1,6 +1,7 @@
 package com.example.lajusta.Interface;
 
 import com.example.lajusta.model.Cart;
+import com.example.lajusta.model.CartsHistorial;
 import com.example.lajusta.model.Category;
 import com.example.lajusta.model.General;
 import com.example.lajusta.model.LoginUser;
@@ -11,6 +12,8 @@ import com.example.lajusta.model.ConfirmRecoveryPassword;
 import com.example.lajusta.model.Token;
 import com.example.lajusta.model.User;
 import java.util.ArrayList;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -18,6 +21,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 
 public interface APICall {
 
@@ -62,4 +66,7 @@ public interface APICall {
 
     @POST("/api/email/recovery/confirm")
     Call<ConfirmRecoveryPassword> confirmRecoveryPassword(@Body ConfirmRecoveryPassword cambiarContraseña);
+
+    @GET("/api/cart")
+    Call<CartsHistorial> getCarts(@QueryMap Map<String,String> options,@Header("Authorization") String auth);
 }

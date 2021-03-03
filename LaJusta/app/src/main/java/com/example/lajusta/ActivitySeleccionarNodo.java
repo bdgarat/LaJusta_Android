@@ -22,6 +22,7 @@ import com.example.lajusta.model.CartProduct;
 import com.example.lajusta.model.General;
 import com.example.lajusta.model.Nodo;
 import com.example.lajusta.model.Token;
+import com.example.lajusta.model.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.osmdroid.api.IMapController;
@@ -86,15 +87,6 @@ public class ActivitySeleccionarNodo extends AppCompatActivity {
         listado.setAdapter(adapter);
 
         botonSeleccionarNodo.setOnClickListener(v -> {
-            boolean SignedIn = sharedPreferences.getBoolean("SignedIn", false);
-            VerificarToken verificarToken = new VerificarToken();
-            if(SignedIn) {
-                if(verificarToken.verificarToken(sharedPreferences)) {
-                    //Va al login informando que fallo el token
-                    Intent intent = new Intent(ActivitySeleccionarNodo.this, ActivityLogin.class);
-                    startActivity(intent);
-                }
-            }
             if(nodoSeleccionado == null) {
                 Toast.makeText(ActivitySeleccionarNodo.this,"Debe seleccionar un nodo de la lista",Toast.LENGTH_SHORT).show();
             } else {
@@ -105,37 +97,66 @@ public class ActivitySeleccionarNodo extends AppCompatActivity {
                 cart.setNodeDate(nodoSeleccionado);
                 APIManejo apiManejo = new APIManejo();
                 APICall service = apiManejo.crearService();
-                service.saveCart(cart, "Bearer " + usuarioLogin.getValue()).enqueue(new Callback<Cart>() {
+
+                //Este getUser juega de validador de token
+                service.getUser(usuarioLogin.getUser().getId(),"Bearer " +usuarioLogin.getValue()).enqueue(new Callback<User>() {
                     @Override
-                    public void onResponse(Call<Cart> call, Response<Cart> response) {
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        //En caso de que el token sea valido, realiza el saveCart correspondiente
                         if(response.code()==200){
-                            String json = gson.toJson(cart);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("carrito",json);
-                            ArrayList<CartProduct> reiniciarProductos = new ArrayList<>();
-                            json = gson.toJson(reiniciarProductos);
-                            editor.putString("compras",json);
-                            editor.commit();
-                            Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityTicket.class);
-                            startActivity(i);
+                            service.saveCart(cart, "Bearer " + usuarioLogin.getValue()).enqueue(new Callback<Cart>() {
+                                @Override
+                                public void onResponse(Call<Cart> call, Response<Cart> response) {
+                                    if(response.code()==200){
+                                        String json = gson.toJson(cart);
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putString("carrito",json);
+                                        ArrayList<CartProduct> reiniciarProductos = new ArrayList<>();
+                                        json = gson.toJson(reiniciarProductos);
+                                        editor.putString("compras",json);
+                                        editor.commit();
+                                        Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityTicket.class);
+                                        startActivity(i);
+                                    }
+                                    else{
+                                        //En caso de que el token expire en ese momento, lleva a login
+                                        if(response.code()==401){
+                                            Toast.makeText(ActivitySeleccionarNodo.this,"Sesion expirada, inicie nuevamente",Toast.LENGTH_LONG).show();
+                                            Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityLogin.class);
+                                            startActivity(i);
+                                        }
+                                        else {
+                                            //En caso de otro tipo de error, lleva al main y no hace la compra
+                                            Toast.makeText(ActivitySeleccionarNodo.this, "No se pudo realizar su compra, intente mas tarde", Toast.LENGTH_LONG).show();
+                                            Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityMain.class);
+                                            startActivity(i);
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Cart> call, Throwable t) {
+                                    //Aca tambien avisa fallo y vuelve al menu
+                                    Toast.makeText(ActivitySeleccionarNodo.this,"No se pudo realizar su compra, intente mas tarde",Toast.LENGTH_LONG).show();
+                                    Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityMain.class);
+                                    startActivity(i);
+                                }
+                            });
                         }
                         else{
-                            if(response.code()==409){
-                                Intent i = new Intent(ActivitySeleccionarNodo.this,ActivityFaltaStock.class);
-                                i.putExtra("errorBody",response.errorBody().toString());
-                                startActivity(i);
-                            }
-                            else{
-                                Toast.makeText(ActivitySeleccionarNodo.this,"No se pudo realizar su compra",Toast.LENGTH_LONG).show();
-                                Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityMain.class);
+                            //Token no valido lleva a login
+                            if(response.code()==401){
+                                Toast.makeText(ActivitySeleccionarNodo.this,"Sesion expirada, inicie nuevamente",Toast.LENGTH_LONG).show();
+                                Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityLogin.class);
                                 startActivity(i);
                             }
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<Cart> call, Throwable t) {
-                        Toast.makeText(ActivitySeleccionarNodo.this,"No se pudo realizar su compra",Toast.LENGTH_LONG).show();
+                    public void onFailure(Call<User> call, Throwable t) {
+                        //Error en getUser, vuelve a main
+                        Toast.makeText(ActivitySeleccionarNodo.this,"No se pudo realizar su compra, intente mas tarde",Toast.LENGTH_LONG).show();
                         Intent i = new Intent(ActivitySeleccionarNodo.this, ActivityMain.class);
                         startActivity(i);
                     }

@@ -63,10 +63,10 @@
         <activity android:name=".ActivitySeleccionarNodo"
             android:theme="@style/Theme.LaJusta.NoActionBar"/>
 
-        <activity android:name=".ActivityFaltaStock"
+        <activity android:name=".ActivityCambiarContraseña"
             android:theme="@style/Theme.LaJusta.NoActionBar"/>
 
-        <activity android:name=".ActivityCambiarContraseña"
+        <activity android:name=".ActivityHistorialCompras"
             android:theme="@style/Theme.LaJusta.NoActionBar"/>
     </application>
 

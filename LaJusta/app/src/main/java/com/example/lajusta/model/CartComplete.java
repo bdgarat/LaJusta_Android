@@ -1,11 +1,11 @@
 package com.example.lajusta.model;
 
-public class Cart {
+public class CartComplete {
     public boolean canceled;
     public CartProduct[] cartProducts;
     public String deletedAt;
     public General general;
-
+    public int id;
     public AvailableNode nodeDate;
     public String observation;
     public String posibleDeliveryDate;
@@ -13,14 +13,7 @@ public class Cart {
     public double total;
     public User user;
 
-    public Cart() {
-    }
-    public double calcularPrecio(){
-        double total=0;
-        for(int i=0;i<cartProducts.length;i++){
-            total+=(cartProducts[i].getQuantity()*cartProducts[i].getProduct().getPrice());
-        }
-        return total;
+    public CartComplete() {
     }
 
 
@@ -39,6 +32,7 @@ public class Cart {
     public void setDeletedAt(String deletedAt) {
         this.deletedAt = deletedAt;
     }
+
 
     public General getGeneral() {
         return general;
@@ -64,6 +58,14 @@ public class Cart {
         this.posibleDeliveryDate = posibleDeliveryDate;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getSaleDate() {
         return saleDate;
     }
@@ -86,5 +88,21 @@ public class Cart {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isCanceled() {
+        return canceled;
+    }
+
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
     }
 }

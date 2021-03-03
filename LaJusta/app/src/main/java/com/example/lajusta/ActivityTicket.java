@@ -44,15 +44,6 @@ public class ActivityTicket extends AppCompatActivity {
         total.setText("$"+String.valueOf(cart.calcularPrecio()));
 
         volver.setOnClickListener(v -> {
-            boolean SignedIn = sharedPreferences.getBoolean("SignedIn", false);
-            VerificarToken verificarToken = new VerificarToken();
-            if(SignedIn) {
-                if(verificarToken.verificarToken(sharedPreferences)) {
-                    //Va al login informando que fallo el token
-                    Intent intent = new Intent(ActivityTicket.this, ActivityLogin.class);
-                    startActivity(intent);
-                }
-            }
             Toast.makeText(this.getApplicationContext(),"Compra realizada exitosamente",Toast.LENGTH_SHORT).show();
             Intent i = new Intent(ActivityTicket.this, ActivityMain.class);
             startActivity(i);

@@ -18,6 +18,7 @@ public class User implements Serializable {
     public String name;
     public String phone;
     public int role;
+    public int id;
 
     public int getId() {
         return id;
@@ -26,8 +27,6 @@ public class User implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-
-    public int id;
 
     public Address getAddress() {
         return address;

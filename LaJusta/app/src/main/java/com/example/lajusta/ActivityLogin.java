@@ -77,6 +77,7 @@ public class ActivityLogin extends AppCompatActivity {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean("SignedIn", true);
                     editor.putString("nombreUsuario", user.getFirstName());
+                    editor.putString("pass",contra);
                     editor.putString("apellidoUsuario", user.getLastName());
                     Gson gson = new Gson();
                     String json = gson.toJson(token);

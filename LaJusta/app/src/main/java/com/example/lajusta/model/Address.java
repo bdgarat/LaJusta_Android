@@ -1,6 +1,16 @@
 package com.example.lajusta.model;
 
 public class Address {
+    private String apartment;
+    private String betweenStreets;
+    private String description;
+    private String floor;
+    private int id;
+    private double latitude;
+    private double longitude;
+    private String number;
+    private String street;
+
     public String getApartment() {
         return apartment;
     }
@@ -73,13 +83,4 @@ public class Address {
         this.street = street;
     }
 
-    private String apartment;
-    private String betweenStreets;
-    private String description;
-    private String floor;
-    private int id;
-    private double latitude;
-    private double longitude;
-    private String number;
-    private String street;
 }

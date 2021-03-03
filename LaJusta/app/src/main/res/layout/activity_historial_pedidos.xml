@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/botonAtras"
+        android:layout_width="100sp"
+        android:layout_height="60sp"
+        android:src="@drawable/abc_vector_test"
+        tools:ignore="MissingConstraints"/>
+
+    <TextView
+        android:id="@+id/nombreUsuario"
+        android:layout_width="match_parent"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:text="Pedidos de Grupo9" />
+
+    <ListView
+        android:id="@+id/listadoPedidos"
+        android:layout_marginTop="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

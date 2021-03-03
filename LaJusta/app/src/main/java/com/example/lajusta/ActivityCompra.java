@@ -70,16 +70,6 @@ public class ActivityCompra extends AppCompatActivity {
         verCarrito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean SignedIn = sharedPreferences.getBoolean("SignedIn", false);
-                VerificarToken verificarToken = new VerificarToken();
-                if(SignedIn) {
-                    if(verificarToken.verificarToken(sharedPreferences)) {
-                        //Va al login informando que fallo el token
-                        Intent intent = new Intent(ActivityCompra.this, ActivityLogin.class);
-                        startActivity(intent);
-                    }
-                }
-
                 if (productosComprados.isEmpty()) {
                     Toast.makeText(ActivityCompra.this, "El Carrito de Compras está vacio!", Toast.LENGTH_LONG).show();
                 } else {
