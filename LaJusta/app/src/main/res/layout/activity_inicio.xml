@@ -41,44 +41,50 @@ tools:context=".ActivityCompra">
 
     </LinearLayout>
 
-    <ImageView
-    android:id="@+id/logoLaJusta"
-    android:layout_width="match_parent"
-    android:layout_height="150dp"
-    android:layout_marginTop="20dp"
-    android:src="@mipmap/lajustalogopositivonegro">
-
-</ImageView>
-
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="70sp"
-        android:text=""
-        android:textSize="25sp"
-        android:padding="10dp"
-        android:textStyle="bold"
-        android:id="@+id/botonComprar" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="70sp"
-        android:text="@string/botonBuscarRecetas"
-        android:textSize="25sp"
-        android:padding="10dp"
-        android:textStyle="bold"
-        android:id="@+id/botonRecetas" />
+        <ImageView
+            android:id="@+id/logoLaJusta"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="20dp"
+            android:src="@mipmap/lajustalogopositivonegro">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="70sp"
-        android:text="@string/botonMasInformacion"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:padding="10dp"
-        android:id="@+id/botonMasInformacion" />
+        </ImageView>
+
+        <Button
+            android:id="@+id/botonComprar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70sp"
+            android:padding="10dp"
+            android:text=""
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/botonRecetas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70sp"
+            android:padding="10dp"
+            android:text="@string/botonBuscarRecetas"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/botonMasInformacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70sp"
+            android:padding="10dp"
+            android:text="@string/botonMasInformacion"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 
 </LinearLayout>

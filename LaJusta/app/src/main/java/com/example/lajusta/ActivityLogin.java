@@ -30,7 +30,6 @@ public class ActivityLogin extends AppCompatActivity {
             setContentView(R.layout.activity_login);
 
             Button registrar=findViewById(R.id.registrar);
-            Button recuperarContra = findViewById(R.id.buttonCambiarContraseña);
             email=findViewById(R.id.username);
             password=findViewById(R.id.password);
             email.setText("");
@@ -45,8 +44,6 @@ public class ActivityLogin extends AppCompatActivity {
             btnlogin.setOnClickListener(v -> logIn());
 
             registrar.setOnClickListener(v -> startActivity(new Intent(ActivityLogin.this, ActivitySignUp.class)));
-
-            recuperarContra.setOnClickListener(v -> startActivity(new Intent(ActivityLogin.this, ActivityCambiarContraseña.class)));
     }
 
     private void logIn() {

@@ -41,6 +41,7 @@ public class ActivityPerfil  extends AppCompatActivity {
         TextView telefonoUsuario = findViewById(R.id.textPerfilTelefono);
         Button cerrarSesion = findViewById(R.id.buttonSignOff);
         Button historialCarrito = findViewById(R.id.historialPedidos);
+        Button recuperarContra = findViewById(R.id.buttonRecuperarContraseña);
         ImageButton atras = findViewById(R.id.botonAtras);
 
         boolean errorPipe = getIntent().getBooleanExtra("errorPipe",false);
@@ -86,6 +87,8 @@ public class ActivityPerfil  extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        recuperarContra.setOnClickListener(v -> startActivity(new Intent(ActivityPerfil.this, ActivityCambiarContraseña.class)));
 
     }
 }

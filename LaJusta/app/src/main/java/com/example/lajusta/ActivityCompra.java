@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.lajusta.Interface.APICall;
@@ -34,6 +35,7 @@ public class ActivityCompra extends AppCompatActivity {
     private boolean signed_off;
     private LinearLayout layoutCarrito;
     private ArrayList<CartProduct> productosComprados;
+    private ProgressBar pb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,9 @@ public class ActivityCompra extends AppCompatActivity {
         listado = findViewById(R.id.listado);
         searchView = findViewById(R.id.searchView);
         layoutCarrito = findViewById(R.id.layoutCarrito);
+        pb = findViewById(R.id.progressBar);
+
+        pb.setVisibility(View.VISIBLE);
 
         SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
         signed_off = !sharedPreferences.getBoolean("SignedIn", false);
@@ -102,9 +107,11 @@ public class ActivityCompra extends AppCompatActivity {
                         productos = response.body();
 
                         //Genera un hashmap, cada categoria contiene sus productos
-                        HashMap<Integer, ArrayList<Product>> prodCategorias = obtenerProductosPorCategoria(categorias,productos);
+                        ObtenerProductosPorCategoria opc = new ObtenerProductosPorCategoria();
+                        HashMap<Integer, ArrayList<Product>> prodCategorias = opc.obtenerProductosPorCategoria(categorias,productos);
                         //ExpAdapter maneja la vista de la Expandable List view y las interacciones
                         adapter = new CustomExpListViewAdapter(categorias, prodCategorias, productosComprados, totalParcial, signed_off,ActivityCompra.this);
+                        pb.setVisibility(View.GONE);
                         listado.setAdapter(adapter);
                         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                             @Override
@@ -135,24 +142,6 @@ public class ActivityCompra extends AppCompatActivity {
 
 
 
-    }
-
-        public HashMap<Integer,ArrayList<Product>> obtenerProductosPorCategoria(ArrayList<Category> categorias, ArrayList<Product> productos){
-            HashMap<Integer, ArrayList<Product>> prodCategorias = new HashMap();
-            for (Category c : categorias) {
-                ArrayList<Product> prodsParaCategoria = new ArrayList<>();
-                for (Product p : productos) {
-                    ArrayList<Category> lista = p.getCategories();
-                    for (Category category : lista) {
-                        if (category.getId() == c.getId()) {
-                            prodsParaCategoria.add(p);
-                        }
-                    }
-
-                }
-                prodCategorias.put(c.getId(), prodsParaCategoria);
-            }
-            return prodCategorias;
     }
 }
 
