@@ -1,6 +1,7 @@
 package com.example.lajusta;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,17 @@ public class CustomAdapterHistorialCarritos extends BaseAdapter {
         CartComplete cart = (CartComplete) getItem(position);
         LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.carrito_en_historial,null);
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, ActivityMostrarCarritoComprado.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("cart_id",cart.getId());
+                context.startActivity(i);
+            }
+        });
+
         ImageView imagen = convertView.findViewById(R.id.imagen);
         imagen.setImageResource(R.drawable.carrito2);
         TextView fecha = convertView.findViewById(R.id.fechaCompra);

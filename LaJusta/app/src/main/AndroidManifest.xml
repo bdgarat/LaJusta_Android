@@ -68,6 +68,9 @@
 
         <activity android:name=".ActivityHistorialCompras"
             android:theme="@style/Theme.LaJusta.NoActionBar"/>
+
+        <activity android:name=".ActivityMostrarCarritoComprado"
+            android:theme="@style/Theme.LaJusta.NoActionBar"/>
     </application>
 
 </manifest>
