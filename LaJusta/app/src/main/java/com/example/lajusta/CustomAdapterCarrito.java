@@ -69,8 +69,8 @@ public class CustomAdapterCarrito extends BaseAdapter {
 
         if(mostrarImagen) {
             ImageView imagen = (ImageView) convertView.findViewById(R.id.imagen);
-            //obtiene la imagen de producto guardada en base64
 
+            //obtiene la imagen de producto guardada en base64
             if (producto.getImages().length > 0) {
                 for (Image img : producto.getImages()) {
                     String base64Str = img.getValue();

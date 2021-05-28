@@ -85,7 +85,7 @@ public class ActivityMostrarCarrito extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        CustomAdapterCarrito adapter = new CustomAdapterCarrito(carrito,cart.calcularPrecio(),this,R.layout.producto_en_carrito, false);
+        CustomAdapterCarrito adapter = new CustomAdapterCarrito(carrito,cart.calcularPrecio(),this,R.layout.producto_en_carrito, true);
         listado.setAdapter(adapter);
     }
 }
